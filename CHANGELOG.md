@@ -23,3 +23,11 @@ once the first stable node interfaces ship.
     background for visual review.
 - Shared tensor/PIL conversion helpers in `nodes/_image_utils.py`.
 - Node reference docs at `docs/nodes/alphaprep.md`.
+- `StickerSheetBuilder` node: packs a batch of transparent assets into
+  a print-ready sheet using a `grid` or `packed` (shelf) layout, with
+  auto-growing canvas, configurable margin/padding/background, and a
+  checkerboard preview output. Docs at
+  `docs/nodes/stickersheetbuilder.md`.
+- Shared `checkerboard()` and `trim_to_content()` helpers moved into
+  `nodes/_image_utils.py` for reuse across AlphaPrep and
+  StickerSheetBuilder.

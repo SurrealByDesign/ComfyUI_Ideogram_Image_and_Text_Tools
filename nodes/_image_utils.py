@@ -46,3 +46,20 @@ def hex_to_rgb(color: str) -> tuple[int, int, int]:
     if len(color) != 6:
         raise ValueError(f"Invalid hex color: {color!r}")
     return tuple(int(color[i : i + 2], 16) for i in (0, 2, 4))
+
+
+def checkerboard(width: int, height: int, size: int) -> Image.Image:
+    light, dark = (204, 204, 204, 255), (153, 153, 153, 255)
+    bg = Image.new("RGBA", (width, height))
+    for y in range(0, height, size):
+        for x in range(0, width, size):
+            color = light if ((x // size) + (y // size)) % 2 == 0 else dark
+            bg.paste(color, (x, y, min(x + size, width), min(y + size, height)))
+    return bg
+
+
+def trim_to_content(rgba: Image.Image, alpha_threshold: float = 0.0) -> Image.Image:
+    """Crop a RGBA image to its non-transparent bounding box (or 1x1 if fully transparent)."""
+    alpha = rgba.getchannel("A")
+    bbox = alpha.point(lambda p: 255 if p > alpha_threshold * 255 else 0).getbbox()
+    return rgba.crop(bbox) if bbox is not None else rgba.crop((0, 0, 1, 1))

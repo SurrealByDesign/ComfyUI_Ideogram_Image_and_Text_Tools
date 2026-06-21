@@ -10,7 +10,13 @@ from __future__ import annotations
 import torch
 from PIL import Image, ImageFilter
 
-from ._image_utils import hex_to_rgb, image_tensor_to_pil, pil_to_image_mask_tensors
+from ._image_utils import (
+    checkerboard,
+    hex_to_rgb,
+    image_tensor_to_pil,
+    pil_to_image_mask_tensors,
+    trim_to_content,
+)
 
 _ANCHORS = (
     "center",
@@ -84,9 +90,7 @@ class AlphaPrepTrim:
         out_images, out_masks = [], []
         for i in range(image.shape[0]):
             rgba = image_tensor_to_pil(image[i], mask[i])
-            alpha = rgba.getchannel("A")
-            bbox = alpha.point(lambda p: 255 if p > alpha_threshold * 255 else 0).getbbox()
-            cropped = rgba.crop(bbox) if bbox is not None else rgba.crop((0, 0, 1, 1))
+            cropped = trim_to_content(rgba, alpha_threshold)
             if padding > 0:
                 w, h = cropped.size
                 padded = Image.new("RGBA", (w + padding * 2, h + padding * 2), (0, 0, 0, 0))
@@ -284,20 +288,10 @@ class AlphaPrepPreviewBackground:
             rgba = image_tensor_to_pil(image[i], mask[i])
             w, h = rgba.size
             if background == "checkerboard":
-                bg = self._checkerboard(w, h, checker_size)
+                bg = checkerboard(w, h, checker_size)
             else:
                 bg = Image.new("RGBA", (w, h), (*hex_to_rgb(color), 255))
             bg.alpha_composite(rgba)
             img_t, _ = pil_to_image_mask_tensors(bg)
             out_images.append(img_t)
         return (torch.cat(out_images, dim=0) if len(out_images) > 1 else out_images[0],)
-
-    @staticmethod
-    def _checkerboard(w: int, h: int, size: int) -> Image.Image:
-        light, dark = (204, 204, 204, 255), (153, 153, 153, 255)
-        bg = Image.new("RGBA", (w, h))
-        for y in range(0, h, size):
-            for x in range(0, w, size):
-                color = light if ((x // size) + (y // size)) % 2 == 0 else dark
-                bg.paste(color, (x, y, min(x + size, w), min(y + size, h)))
-        return bg
