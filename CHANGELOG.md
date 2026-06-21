@@ -41,3 +41,7 @@ once the first stable node interfaces ship.
   version, banner version, and monochrome silhouette from a single
   logo asset in one pass, reusing AlphaPrep's trim/fit/anchor helpers.
   Docs at `docs/nodes/logoassetbuilder.md`.
+- Example workflows (ComfyUI API-format JSON) for all four node
+  families: `alphaprep_basic.json`, `stickersheet_basic.json`,
+  `wordmark_basic.json`, `logoassetbuilder_basic.json`. Validated by
+  `tests/test_examples.py` against the live node registry.

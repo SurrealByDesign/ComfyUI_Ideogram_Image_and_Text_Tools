@@ -1,0 +1,97 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "_meta": { "title": "Load asset 1" },
+    "inputs": { "image": "logo1.png" }
+  },
+  "2": {
+    "class_type": "LoadImage",
+    "_meta": { "title": "Load asset 2" },
+    "inputs": { "image": "logo2.png" }
+  },
+  "3": {
+    "class_type": "LoadImage",
+    "_meta": { "title": "Load asset 3" },
+    "inputs": { "image": "logo3.png" }
+  },
+  "4": {
+    "class_type": "AlphaPrepTrim",
+    "_meta": { "title": "Trim asset 1" },
+    "inputs": { "image": ["1", 0], "mask": ["1", 1], "alpha_threshold": 0.0, "padding": 0 }
+  },
+  "5": {
+    "class_type": "AlphaPrepTrim",
+    "_meta": { "title": "Trim asset 2" },
+    "inputs": { "image": ["2", 0], "mask": ["2", 1], "alpha_threshold": 0.0, "padding": 0 }
+  },
+  "6": {
+    "class_type": "AlphaPrepTrim",
+    "_meta": { "title": "Trim asset 3" },
+    "inputs": { "image": ["3", 0], "mask": ["3", 1], "alpha_threshold": 0.0, "padding": 0 }
+  },
+  "7": {
+    "class_type": "ImageBatch",
+    "_meta": { "title": "Batch images 1+2" },
+    "inputs": { "image1": ["4", 0], "image2": ["5", 0] }
+  },
+  "8": {
+    "class_type": "ImageBatch",
+    "_meta": { "title": "Batch images (1+2)+3" },
+    "inputs": { "image1": ["7", 0], "image2": ["6", 0] }
+  },
+  "9": {
+    "class_type": "MaskToImage",
+    "_meta": { "title": "Mask 1 as image" },
+    "inputs": { "mask": ["4", 1] }
+  },
+  "10": {
+    "class_type": "MaskToImage",
+    "_meta": { "title": "Mask 2 as image" },
+    "inputs": { "mask": ["5", 1] }
+  },
+  "11": {
+    "class_type": "MaskToImage",
+    "_meta": { "title": "Mask 3 as image" },
+    "inputs": { "mask": ["6", 1] }
+  },
+  "12": {
+    "class_type": "ImageBatch",
+    "_meta": { "title": "Batch masks 1+2" },
+    "inputs": { "image1": ["9", 0], "image2": ["10", 0] }
+  },
+  "13": {
+    "class_type": "ImageBatch",
+    "_meta": { "title": "Batch masks (1+2)+3" },
+    "inputs": { "image1": ["12", 0], "image2": ["11", 0] }
+  },
+  "14": {
+    "class_type": "ImageToMask",
+    "_meta": { "title": "Batched masks back to MASK" },
+    "inputs": { "image": ["13", 0], "channel": "red" }
+  },
+  "15": {
+    "class_type": "StickerSheetBuilder",
+    "_meta": { "title": "Build sticker sheet" },
+    "inputs": {
+      "images": ["8", 0],
+      "masks": ["14", 0],
+      "layout": "grid",
+      "sheet_width": 2048,
+      "sheet_height": 2048,
+      "margin": 32,
+      "padding": 16,
+      "columns": 0,
+      "background_color": "#00000000"
+    }
+  },
+  "16": {
+    "class_type": "SaveImage",
+    "_meta": { "title": "Save sticker sheet" },
+    "inputs": { "images": ["15", 0], "filename_prefix": "sticker_sheet" }
+  },
+  "17": {
+    "class_type": "PreviewImage",
+    "_meta": { "title": "Preview sheet" },
+    "inputs": { "images": ["15", 2] }
+  }
+}

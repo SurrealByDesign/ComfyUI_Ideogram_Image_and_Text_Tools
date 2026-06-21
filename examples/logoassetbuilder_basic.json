@@ -1,0 +1,47 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "_meta": { "title": "Load source logo" },
+    "inputs": { "image": "logo.png" }
+  },
+  "2": {
+    "class_type": "AlphaPrepTrim",
+    "_meta": { "title": "Trim transparent border" },
+    "inputs": { "image": ["1", 0], "mask": ["1", 1], "alpha_threshold": 0.0, "padding": 0 }
+  },
+  "3": {
+    "class_type": "LogoAssetBuilder",
+    "_meta": { "title": "Build logo asset package" },
+    "inputs": {
+      "image": ["2", 0],
+      "mask": ["2", 1],
+      "padding": 20,
+      "square_size": 512,
+      "banner_width": 1500,
+      "banner_height": 500,
+      "anchor": "center",
+      "background_color": "#00000000",
+      "monochrome_color": "#000000"
+    }
+  },
+  "4": {
+    "class_type": "SaveImage",
+    "_meta": { "title": "Save transparent export" },
+    "inputs": { "images": ["3", 0], "filename_prefix": "logo_transparent" }
+  },
+  "5": {
+    "class_type": "SaveImage",
+    "_meta": { "title": "Save square version" },
+    "inputs": { "images": ["3", 2], "filename_prefix": "logo_square" }
+  },
+  "6": {
+    "class_type": "SaveImage",
+    "_meta": { "title": "Save banner version" },
+    "inputs": { "images": ["3", 4], "filename_prefix": "logo_banner" }
+  },
+  "7": {
+    "class_type": "SaveImage",
+    "_meta": { "title": "Save monochrome version" },
+    "inputs": { "images": ["3", 6], "filename_prefix": "logo_monochrome" }
+  }
+}

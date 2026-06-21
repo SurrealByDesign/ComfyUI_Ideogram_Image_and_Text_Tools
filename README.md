@@ -18,10 +18,10 @@ Generate assets -> Prepare assets -> Package assets
 ## Status
 
 All four v1 node systems are implemented: AlphaPrep, StickerSheetBuilder,
-WordmarkGenerator, and LogoAssetBuilder. See [CHANGELOG.md](CHANGELOG.md)
-for progress and [docs/](docs/) for design notes. Release hardening
-(example workflow JSON files, broader real-world testing) is still
-outstanding before a v1.0 tag.
+WordmarkGenerator, and LogoAssetBuilder, each with example workflows in
+[examples/](examples/). See [CHANGELOG.md](CHANGELOG.md) for progress
+and [docs/](docs/) for design notes. Broader real-world testing inside
+a live ComfyUI instance is still outstanding before a v1.0 tag.
 
 ## Planned Nodes (in build order)
 

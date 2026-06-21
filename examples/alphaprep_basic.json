@@ -1,0 +1,77 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "_meta": { "title": "Load source asset" },
+    "inputs": { "image": "example.png" }
+  },
+  "2": {
+    "class_type": "AlphaPrepTrim",
+    "_meta": { "title": "Trim transparent border" },
+    "inputs": {
+      "image": ["1", 0],
+      "mask": ["1", 1],
+      "alpha_threshold": 0.0,
+      "padding": 0
+    }
+  },
+  "3": {
+    "class_type": "AlphaPrepOutline",
+    "_meta": { "title": "Sticker-cut outline" },
+    "inputs": {
+      "image": ["2", 0],
+      "mask": ["2", 1],
+      "outline_width": 8,
+      "outline_color": "#FFFFFF"
+    }
+  },
+  "4": {
+    "class_type": "AlphaPrepDropShadow",
+    "_meta": { "title": "Drop shadow" },
+    "inputs": {
+      "image": ["3", 0],
+      "mask": ["3", 1],
+      "offset_x": 8,
+      "offset_y": 8,
+      "blur_radius": 12,
+      "shadow_color": "#000000",
+      "shadow_opacity": 0.6
+    }
+  },
+  "5": {
+    "class_type": "AlphaPrepResizeCanvas",
+    "_meta": { "title": "Resize to final canvas" },
+    "inputs": {
+      "image": ["4", 0],
+      "mask": ["4", 1],
+      "width": 512,
+      "height": 512,
+      "anchor": "center",
+      "keep_aspect": true,
+      "background_color": "#00000000"
+    }
+  },
+  "6": {
+    "class_type": "AlphaPrepPreviewBackground",
+    "_meta": { "title": "Preview on checkerboard" },
+    "inputs": {
+      "image": ["5", 0],
+      "mask": ["5", 1],
+      "background": "checkerboard",
+      "color": "#FFFFFF",
+      "checker_size": 16
+    }
+  },
+  "7": {
+    "class_type": "SaveImage",
+    "_meta": { "title": "Save production asset" },
+    "inputs": {
+      "images": ["5", 0],
+      "filename_prefix": "alphaprep_asset"
+    }
+  },
+  "8": {
+    "class_type": "PreviewImage",
+    "_meta": { "title": "Preview in UI" },
+    "inputs": { "images": ["6", 0] }
+  }
+}
