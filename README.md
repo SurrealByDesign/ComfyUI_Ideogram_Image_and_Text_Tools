@@ -17,10 +17,10 @@ Generate assets -> Prepare assets -> Package assets
 
 ## Status
 
-Phase 2 (AlphaPrep) and Phase 3 (StickerSheetBuilder) are implemented.
-WordmarkGenerator and LogoAssetBuilder are not started. See
-[CHANGELOG.md](CHANGELOG.md) for progress and [docs/](docs/) for design
-notes.
+Phase 2 (AlphaPrep), Phase 3 (StickerSheetBuilder), and Phase 4
+(WordmarkGenerator) are implemented. LogoAssetBuilder is not started.
+See [CHANGELOG.md](CHANGELOG.md) for progress and [docs/](docs/) for
+design notes.
 
 ## Planned Nodes (in build order)
 
@@ -31,8 +31,10 @@ notes.
    assets into print-ready sticker sheets with configurable layouts,
    margins, and sheet sizes. See
    [docs/nodes/stickersheetbuilder.md](docs/nodes/stickersheetbuilder.md).
-3. **WordmarkGenerator** — typography-first branding asset generation
-   (band logos, product names, podcast branding, etc.).
+3. **WordmarkGenerator** (implemented) — typography-first branding
+   asset generation (band logos, product names, podcast branding,
+   etc.). See
+   [docs/nodes/wordmarkgenerator.md](docs/nodes/wordmarkgenerator.md).
 4. **LogoAssetBuilder** — full logo asset packages: variants, transparent
    exports, square/banner versions, monochrome versions.
 

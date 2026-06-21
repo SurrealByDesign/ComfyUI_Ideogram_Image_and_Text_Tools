@@ -31,3 +31,9 @@ once the first stable node interfaces ship.
 - Shared `checkerboard()` and `trim_to_content()` helpers moved into
   `nodes/_image_utils.py` for reuse across AlphaPrep and
   StickerSheetBuilder.
+- `WordmarkGenerator` node: renders text directly to a transparent
+  asset with font/size/color/letter-spacing controls, `regular`/
+  `uppercase`/`wide` style presets, and deterministic multi-variant
+  batch generation. Falls back through system fonts to Pillow's
+  built-in font if no font file is supplied. Docs at
+  `docs/nodes/wordmarkgenerator.md`.
