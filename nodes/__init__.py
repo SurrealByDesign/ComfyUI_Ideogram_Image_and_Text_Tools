@@ -7,6 +7,7 @@ from .alpha_prep import (
     AlphaPrepResizeCanvas,
     AlphaPrepTrim,
 )
+from .logo_asset_builder import LogoAssetBuilder
 from .sticker_sheet import StickerSheetBuilder
 from .wordmark import WordmarkGenerator
 
@@ -18,6 +19,7 @@ NODE_CLASS_MAPPINGS = {
     "AlphaPrepPreviewBackground": AlphaPrepPreviewBackground,
     "StickerSheetBuilder": StickerSheetBuilder,
     "WordmarkGenerator": WordmarkGenerator,
+    "LogoAssetBuilder": LogoAssetBuilder,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -28,4 +30,5 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "AlphaPrepPreviewBackground": "AlphaPrep: Preview Background",
     "StickerSheetBuilder": "Sticker Sheet Builder",
     "WordmarkGenerator": "Wordmark Generator",
+    "LogoAssetBuilder": "Logo Asset Builder",
 }

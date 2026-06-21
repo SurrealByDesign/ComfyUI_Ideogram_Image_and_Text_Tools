@@ -37,3 +37,7 @@ once the first stable node interfaces ship.
   batch generation. Falls back through system fonts to Pillow's
   built-in font if no font file is supplied. Docs at
   `docs/nodes/wordmarkgenerator.md`.
+- `LogoAssetBuilder` node: builds a transparent export, square
+  version, banner version, and monochrome silhouette from a single
+  logo asset in one pass, reusing AlphaPrep's trim/fit/anchor helpers.
+  Docs at `docs/nodes/logoassetbuilder.md`.

@@ -17,10 +17,11 @@ Generate assets -> Prepare assets -> Package assets
 
 ## Status
 
-Phase 2 (AlphaPrep), Phase 3 (StickerSheetBuilder), and Phase 4
-(WordmarkGenerator) are implemented. LogoAssetBuilder is not started.
-See [CHANGELOG.md](CHANGELOG.md) for progress and [docs/](docs/) for
-design notes.
+All four v1 node systems are implemented: AlphaPrep, StickerSheetBuilder,
+WordmarkGenerator, and LogoAssetBuilder. See [CHANGELOG.md](CHANGELOG.md)
+for progress and [docs/](docs/) for design notes. Release hardening
+(example workflow JSON files, broader real-world testing) is still
+outstanding before a v1.0 tag.
 
 ## Planned Nodes (in build order)
 
@@ -35,8 +36,10 @@ design notes.
    asset generation (band logos, product names, podcast branding,
    etc.). See
    [docs/nodes/wordmarkgenerator.md](docs/nodes/wordmarkgenerator.md).
-4. **LogoAssetBuilder** — full logo asset packages: variants, transparent
-   exports, square/banner versions, monochrome versions.
+4. **LogoAssetBuilder** (implemented) — full logo asset packages:
+   variants, transparent exports, square/banner versions, monochrome
+   versions. See
+   [docs/nodes/logoassetbuilder.md](docs/nodes/logoassetbuilder.md).
 
 Background removal and other supporting utilities may be added later,
 but are not the primary value of this repository.
