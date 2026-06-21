@@ -5,9 +5,13 @@ node once it ships.
 
 Planned examples (matching build order):
 
-- `alphaprep_basic.json`
+- `alphaprep_basic.json` — AlphaPrep nodes are implemented; a saved
+  ComfyUI workflow JSON is still pending (add via the ComfyUI "Save"
+  button once a reference graph is built: Trim -> Outline -> Drop
+  Shadow -> Resize Canvas -> Preview Background).
 - `stickersheet_basic.json`
 - `wordmark_basic.json`
 - `logoassetbuilder_basic.json`
 
-No example workflows exist yet — nodes have not been implemented.
+See [docs/nodes/alphaprep.md](../docs/nodes/alphaprep.md) for the
+AlphaPrep node reference and a typical chain to wire up manually.

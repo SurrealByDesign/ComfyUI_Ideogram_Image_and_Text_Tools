@@ -17,14 +17,15 @@ Generate assets -> Prepare assets -> Package assets
 
 ## Status
 
-This repository is in early foundation setup. No nodes are enabled yet.
-See [CHANGELOG.md](CHANGELOG.md) for progress and
-[docs/](docs/) for design notes.
+Phase 2 (AlphaPrep) is implemented. StickerSheetBuilder, WordmarkGenerator,
+and LogoAssetBuilder are not started. See [CHANGELOG.md](CHANGELOG.md) for
+progress and [docs/](docs/) for design notes.
 
 ## Planned Nodes (in build order)
 
-1. **AlphaPrep** — trim transparent borders, pad, center, resize canvas,
-   generate sticker outlines and drop shadows, preview against backgrounds.
+1. **AlphaPrep** (implemented) — trim transparent borders, pad, center,
+   resize canvas, generate sticker outlines and drop shadows, preview
+   against backgrounds. See [docs/nodes/alphaprep.md](docs/nodes/alphaprep.md).
 2. **StickerSheetBuilder** — pack multiple transparent assets into
    print-ready sticker sheets with configurable layouts, margins, and
    sheet sizes.
