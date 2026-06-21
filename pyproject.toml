@@ -1,0 +1,17 @@
+[project]
+name = "comfyui-ideogram-image-and-text-tools"
+version = "0.0.1"
+description = "Production asset creation and preparation nodes for ComfyUI: turn Ideogram outputs into usable assets."
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
