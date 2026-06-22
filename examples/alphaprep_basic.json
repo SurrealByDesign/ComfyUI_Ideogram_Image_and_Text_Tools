@@ -5,31 +5,38 @@
     "inputs": { "image": "example.png" }
   },
   "2": {
+    "class_type": "InvertMask",
+    "_meta": {
+      "title": "Convert LoadImage's inpainting-style mask to AlphaPrep's alpha convention"
+    },
+    "inputs": { "mask": ["1", 1] }
+  },
+  "3": {
     "class_type": "AlphaPrepTrim",
     "_meta": { "title": "Trim transparent border" },
     "inputs": {
       "image": ["1", 0],
-      "mask": ["1", 1],
+      "mask": ["2", 0],
       "alpha_threshold": 0.0,
       "padding": 0
     }
   },
-  "3": {
+  "4": {
     "class_type": "AlphaPrepOutline",
     "_meta": { "title": "Sticker-cut outline" },
     "inputs": {
-      "image": ["2", 0],
-      "mask": ["2", 1],
+      "image": ["3", 0],
+      "mask": ["3", 1],
       "outline_width": 8,
       "outline_color": "#FFFFFF"
     }
   },
-  "4": {
+  "5": {
     "class_type": "AlphaPrepDropShadow",
     "_meta": { "title": "Drop shadow" },
     "inputs": {
-      "image": ["3", 0],
-      "mask": ["3", 1],
+      "image": ["4", 0],
+      "mask": ["4", 1],
       "offset_x": 8,
       "offset_y": 8,
       "blur_radius": 12,
@@ -37,12 +44,12 @@
       "shadow_opacity": 0.6
     }
   },
-  "5": {
+  "6": {
     "class_type": "AlphaPrepResizeCanvas",
     "_meta": { "title": "Resize to final canvas" },
     "inputs": {
-      "image": ["4", 0],
-      "mask": ["4", 1],
+      "image": ["5", 0],
+      "mask": ["5", 1],
       "width": 512,
       "height": 512,
       "anchor": "center",
@@ -50,28 +57,40 @@
       "background_color": "#00000000"
     }
   },
-  "6": {
+  "7": {
     "class_type": "AlphaPrepPreviewBackground",
     "_meta": { "title": "Preview on checkerboard" },
     "inputs": {
-      "image": ["5", 0],
-      "mask": ["5", 1],
+      "image": ["6", 0],
+      "mask": ["6", 1],
       "background": "checkerboard",
       "color": "#FFFFFF",
       "checker_size": 16
     }
   },
-  "7": {
+  "8": {
+    "class_type": "InvertMask",
+    "_meta": {
+      "title": "JoinImageWithAlpha expects an inpainting-style mask, so invert back"
+    },
+    "inputs": { "mask": ["6", 1] }
+  },
+  "9": {
+    "class_type": "JoinImageWithAlpha",
+    "_meta": { "title": "Bake mask into PNG alpha for export" },
+    "inputs": { "image": ["6", 0], "alpha": ["8", 0] }
+  },
+  "10": {
     "class_type": "SaveImage",
     "_meta": { "title": "Save production asset" },
     "inputs": {
-      "images": ["5", 0],
+      "images": ["9", 0],
       "filename_prefix": "alphaprep_asset"
     }
   },
-  "8": {
+  "11": {
     "class_type": "PreviewImage",
     "_meta": { "title": "Preview in UI" },
-    "inputs": { "images": ["6", 0] }
+    "inputs": { "images": ["7", 0] }
   }
 }

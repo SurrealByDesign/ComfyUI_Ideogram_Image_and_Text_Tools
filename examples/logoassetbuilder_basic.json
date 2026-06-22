@@ -5,16 +5,23 @@
     "inputs": { "image": "logo.png" }
   },
   "2": {
-    "class_type": "AlphaPrepTrim",
-    "_meta": { "title": "Trim transparent border" },
-    "inputs": { "image": ["1", 0], "mask": ["1", 1], "alpha_threshold": 0.0, "padding": 0 }
+    "class_type": "InvertMask",
+    "_meta": {
+      "title": "Convert LoadImage's inpainting-style mask to AlphaPrep's alpha convention"
+    },
+    "inputs": { "mask": ["1", 1] }
   },
   "3": {
+    "class_type": "AlphaPrepTrim",
+    "_meta": { "title": "Trim transparent border" },
+    "inputs": { "image": ["1", 0], "mask": ["2", 0], "alpha_threshold": 0.0, "padding": 0 }
+  },
+  "4": {
     "class_type": "LogoAssetBuilder",
     "_meta": { "title": "Build logo asset package" },
     "inputs": {
-      "image": ["2", 0],
-      "mask": ["2", 1],
+      "image": ["3", 0],
+      "mask": ["3", 1],
       "padding": 20,
       "square_size": 512,
       "banner_width": 1500,
@@ -24,24 +31,64 @@
       "monochrome_color": "#000000"
     }
   },
-  "4": {
-    "class_type": "SaveImage",
-    "_meta": { "title": "Save transparent export" },
-    "inputs": { "images": ["3", 0], "filename_prefix": "logo_transparent" }
-  },
   "5": {
-    "class_type": "SaveImage",
-    "_meta": { "title": "Save square version" },
-    "inputs": { "images": ["3", 2], "filename_prefix": "logo_square" }
+    "class_type": "InvertMask",
+    "_meta": { "title": "Invert transparent mask for JoinImageWithAlpha" },
+    "inputs": { "mask": ["4", 1] }
   },
   "6": {
-    "class_type": "SaveImage",
-    "_meta": { "title": "Save banner version" },
-    "inputs": { "images": ["3", 4], "filename_prefix": "logo_banner" }
+    "class_type": "JoinImageWithAlpha",
+    "_meta": { "title": "Bake transparent mask into PNG alpha" },
+    "inputs": { "image": ["4", 0], "alpha": ["5", 0] }
   },
   "7": {
     "class_type": "SaveImage",
+    "_meta": { "title": "Save transparent export" },
+    "inputs": { "images": ["6", 0], "filename_prefix": "logo_transparent" }
+  },
+  "8": {
+    "class_type": "InvertMask",
+    "_meta": { "title": "Invert square mask for JoinImageWithAlpha" },
+    "inputs": { "mask": ["4", 3] }
+  },
+  "9": {
+    "class_type": "JoinImageWithAlpha",
+    "_meta": { "title": "Bake square mask into PNG alpha" },
+    "inputs": { "image": ["4", 2], "alpha": ["8", 0] }
+  },
+  "10": {
+    "class_type": "SaveImage",
+    "_meta": { "title": "Save square version" },
+    "inputs": { "images": ["9", 0], "filename_prefix": "logo_square" }
+  },
+  "11": {
+    "class_type": "InvertMask",
+    "_meta": { "title": "Invert banner mask for JoinImageWithAlpha" },
+    "inputs": { "mask": ["4", 5] }
+  },
+  "12": {
+    "class_type": "JoinImageWithAlpha",
+    "_meta": { "title": "Bake banner mask into PNG alpha" },
+    "inputs": { "image": ["4", 4], "alpha": ["11", 0] }
+  },
+  "13": {
+    "class_type": "SaveImage",
+    "_meta": { "title": "Save banner version" },
+    "inputs": { "images": ["12", 0], "filename_prefix": "logo_banner" }
+  },
+  "14": {
+    "class_type": "InvertMask",
+    "_meta": { "title": "Invert monochrome mask for JoinImageWithAlpha" },
+    "inputs": { "mask": ["4", 7] }
+  },
+  "15": {
+    "class_type": "JoinImageWithAlpha",
+    "_meta": { "title": "Bake monochrome mask into PNG alpha" },
+    "inputs": { "image": ["4", 6], "alpha": ["14", 0] }
+  },
+  "16": {
+    "class_type": "SaveImage",
     "_meta": { "title": "Save monochrome version" },
-    "inputs": { "images": ["3", 6], "filename_prefix": "logo_monochrome" }
+    "inputs": { "images": ["15", 0], "filename_prefix": "logo_monochrome" }
   }
 }

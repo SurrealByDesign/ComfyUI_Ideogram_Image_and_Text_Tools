@@ -28,11 +28,23 @@
     }
   },
   "3": {
-    "class_type": "SaveImage",
-    "_meta": { "title": "Save wordmark variants" },
-    "inputs": { "images": ["2", 0], "filename_prefix": "wordmark" }
+    "class_type": "InvertMask",
+    "_meta": {
+      "title": "JoinImageWithAlpha expects an inpainting-style mask, so invert"
+    },
+    "inputs": { "mask": ["2", 1] }
   },
   "4": {
+    "class_type": "JoinImageWithAlpha",
+    "_meta": { "title": "Bake mask into PNG alpha for export" },
+    "inputs": { "image": ["2", 0], "alpha": ["3", 0] }
+  },
+  "5": {
+    "class_type": "SaveImage",
+    "_meta": { "title": "Save wordmark variants" },
+    "inputs": { "images": ["4", 0], "filename_prefix": "wordmark" }
+  },
+  "6": {
     "class_type": "AlphaPrepPreviewBackground",
     "_meta": { "title": "Preview on checkerboard" },
     "inputs": {
@@ -43,9 +55,9 @@
       "checker_size": 16
     }
   },
-  "5": {
+  "7": {
     "class_type": "PreviewImage",
     "_meta": { "title": "Preview in UI" },
-    "inputs": { "images": ["4", 0] }
+    "inputs": { "images": ["6", 0] }
   }
 }

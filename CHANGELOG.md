@@ -45,3 +45,27 @@ once the first stable node interfaces ship.
   families: `alphaprep_basic.json`, `stickersheet_basic.json`,
   `wordmark_basic.json`, `logoassetbuilder_basic.json`. Validated by
   `tests/test_examples.py` against the live node registry.
+- `LICENSE` file (MIT, matching the license already declared in
+  `pyproject.toml`).
+
+### Fixed
+
+- All four example workflows now route through core's `InvertMask`
+  node when bridging to/from `LoadImage` and `JoinImageWithAlpha`.
+  ComfyUI's built-in nodes use an inpainting-style mask convention
+  (`1.0` = transparent/masked-out), the opposite of this repository's
+  alpha convention (`1.0` = opaque) — found by runtime-testing the
+  package in a live ComfyUI instance and inspecting actual output
+  pixels, not caught by unit tests alone. See
+  `docs/README.md` for the full explanation.
+- `tests/test_examples.py` now detects duplicate node ids in example
+  JSON (plain `json.load` silently keeps the last value on a
+  duplicate key, which had let a node-id collision slip through
+  unnoticed during the `InvertMask` fix).
+
+### Verified
+
+- All four example workflows were queued against a real, running
+  ComfyUI 0.24.0 instance via its `/prompt` API and confirmed
+  `execution_success`, with output PNG pixel values inspected to
+  confirm correct color and alpha.
