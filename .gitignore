@@ -8,3 +8,4 @@ venv/
 *.png
 !examples/**/*.png
 .DS_Store
+.claude/
