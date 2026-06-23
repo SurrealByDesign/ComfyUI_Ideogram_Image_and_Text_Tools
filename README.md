@@ -28,18 +28,39 @@ progress and [docs/](docs/) for design notes and known limitations.
 1. **AlphaPrep** (implemented) — trim transparent borders, pad, center,
    resize canvas, generate sticker outlines and drop shadows, preview
    against backgrounds. See [docs/nodes/alphaprep.md](docs/nodes/alphaprep.md).
+
+   ![A cartoon hotdog sticker with a white sticker-cut outline and a soft drop shadow, shown on a checkerboard transparency background](assets/alphaprep_showcase.png)
+
+   *Trim → Outline → Drop Shadow → Resize Canvas → Preview Background, chained.*
+
 2. **StickerSheetBuilder** (implemented) — pack multiple transparent
    assets into print-ready sticker sheets with configurable layouts,
    margins, and sheet sizes. See
    [docs/nodes/stickersheetbuilder.md](docs/nodes/stickersheetbuilder.md).
+
+   ![Five cartoon hotdog stickers in different colors, packed tightly into a single row on a sticker sheet](assets/stickersheet_showcase.png)
+
+   *Five hotdog variants packed with the `packed` (shelf) layout.*
+
 3. **WordmarkGenerator** (implemented) — typography-first branding
    asset generation (band logos, product names, podcast branding,
    etc.). See
    [docs/nodes/wordmarkgenerator.md](docs/nodes/wordmarkgenerator.md).
+
+   ![The text HOTDOG STAND rendered in bold, widely-spaced red uppercase letters](assets/wordmark_showcase.png)
+
+   *Rendered directly from text with the `wide` style preset — no image generation involved.*
+
 4. **LogoAssetBuilder** (implemented) — full logo asset packages:
    variants, transparent exports, square/banner versions, monochrome
    versions. See
    [docs/nodes/logoassetbuilder.md](docs/nodes/logoassetbuilder.md).
+
+   | Transparent | Square | Banner | Monochrome |
+   | --- | --- | --- | --- |
+   | ![Transparent hotdog logo export on a checkerboard background](assets/logoassetbuilder_transparent_showcase.png) | ![Hotdog logo centered on a square canvas with a cream background](assets/logoassetbuilder_square_showcase.png) | ![Hotdog logo centered on a wide banner canvas with a cream background](assets/logoassetbuilder_banner_showcase.png) | ![Hotdog logo silhouette recolored to solid red, alpha preserved](assets/logoassetbuilder_monochrome_showcase.png) |
+
+   *One logo asset in, four production-ready package outputs out.*
 
 Background removal and other supporting utilities may be added later,
 but are not the primary value of this repository.

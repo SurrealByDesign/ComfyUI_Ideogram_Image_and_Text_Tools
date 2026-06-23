@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- README showcase images for all four node systems under `assets/`,
+  generated with the real nodes (not mockups) against a cartoon hotdog
+  test asset: AlphaPrep's outline/drop-shadow chain, a StickerSheetBuilder
+  packed sheet of five recolored hotdog stickers, a WordmarkGenerator
+  "HOTDOG STAND" render, and LogoAssetBuilder's four package outputs
+  (transparent/square/banner/monochrome).
+
 ### Fixed
 
 - `hex_to_rgb()` raised an unhandled `ValueError` on any malformed color
