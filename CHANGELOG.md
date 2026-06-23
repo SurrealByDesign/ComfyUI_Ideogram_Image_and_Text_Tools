@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   example workflows updated to use it in place of `InvertMask`.
   Verified live against a running ComfyUI instance, including a saved
   PNG's alpha channel inspected byte-for-byte.
+- README badges (CI status, license, Python version, package version)
+  and a quickstart diagram (`assets/quickstart_chain.png`) illustrating
+  the full `LoadImage -> AlphaPrep: Mask Adapter -> AlphaPrep node(s)
+  -> AlphaPrep: Mask Adapter -> JoinImageWithAlpha -> SaveImage` chain.
 - README showcase images for all four node systems under `assets/`,
   generated with the real nodes (not mockups) against a cartoon hotdog
   test asset: AlphaPrep's outline/drop-shadow chain, a StickerSheetBuilder

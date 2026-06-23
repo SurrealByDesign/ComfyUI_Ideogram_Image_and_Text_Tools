@@ -1,5 +1,11 @@
 # ComfyUI Ideogram Image and Text Tools
 
+![CI](https://github.com/SurrealByDesign/ComfyUI_Ideogram_Image_and_Text_Tools/actions/workflows/ci.yml/badge.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)
+![Version 1.0.0](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![ComfyUI custom nodes](https://img.shields.io/badge/ComfyUI-custom%20nodes-6f42c1.svg)
+
 Take Ideogram outputs and turn them into usable assets.
 
 ## Why This Exists
@@ -100,6 +106,8 @@ JoinImageWithAlpha -> SaveImage`. See
 [docs/README.md](docs/README.md#mask-convention--read-this-before-wiring-to-core-comfyui-nodes)
 for the full explanation, and [examples/](examples/) for working
 reference wiring.
+
+![Diagram of a ComfyUI node chain: LoadImage, then AlphaPrep Mask Adapter (blue), then one or more AlphaPrep nodes (green), then AlphaPrep Mask Adapter again (blue), then JoinImageWithAlpha, then SaveImage](assets/quickstart_chain.png)
 
 ## Known Limitations
 
