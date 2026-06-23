@@ -29,7 +29,7 @@ example workflows in [examples/](examples/) and verified end-to-end
 against a live ComfyUI instance. See [CHANGELOG.md](CHANGELOG.md) for
 progress and [docs/](docs/) for design notes and known limitations.
 
-## Planned Nodes (in build order)
+## Node Systems (in build order)
 
 1. **AlphaPrep** (implemented) — trim transparent borders, pad, center,
    resize canvas, generate sticker outlines and drop shadows, preview
@@ -134,6 +134,11 @@ git clone https://github.com/SurrealByDesign/ComfyUI_Ideogram_Image_and_Text_Too
 
 No extra dependencies to install — this package only needs `torch`,
 `numpy`, and `Pillow`, all of which ComfyUI already provides.
+
+Live-verified against **ComfyUI 0.24.0**. The nodes are plain Python
+with no version-specific API usage, so other recent ComfyUI versions
+should work too, but 0.24.0 is the only version this has actually been
+run against end-to-end.
 
 ## Testing
 
