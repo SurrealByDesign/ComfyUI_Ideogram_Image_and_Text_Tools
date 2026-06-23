@@ -12,9 +12,16 @@ both document it explicitly.
 
 from __future__ import annotations
 
+import sys
+
 import numpy as np
 import torch
 from PIL import Image
+
+
+def _warn(context: str, message: str) -> None:
+    """Surface a non-fatal warning to the console without breaking the graph."""
+    print(f"[Ideogram Image and Text Tools] {context}: {message}", file=sys.stderr)
 
 
 def image_tensor_to_pil(image: torch.Tensor, mask: torch.Tensor | None = None) -> Image.Image:
@@ -40,12 +47,54 @@ def pil_to_image_mask_tensors(img: Image.Image) -> tuple[torch.Tensor, torch.Ten
 
 
 def hex_to_rgb(color: str) -> tuple[int, int, int]:
+    """Parse a #RGB or #RRGGBB hex string. Raises ValueError on malformed input --
+    use safe_hex_to_rgb at node boundaries where user-supplied text must never
+    crash the graph."""
     color = color.strip().lstrip("#")
     if len(color) == 3:
         color = "".join(ch * 2 for ch in color)
     if len(color) != 6:
         raise ValueError(f"Invalid hex color: {color!r}")
     return tuple(int(color[i : i + 2], 16) for i in (0, 2, 4))
+
+
+def safe_hex_to_rgb(
+    color: str, fallback: tuple[int, int, int] = (0, 0, 0), context: str = "color"
+) -> tuple[int, int, int]:
+    """hex_to_rgb, but malformed input warns to the console and returns `fallback`
+    instead of raising. Use this in every node-facing STRING color widget --
+    free-text color inputs must never crash the whole queue over a typo."""
+    try:
+        return hex_to_rgb(color)
+    except ValueError as e:
+        _warn(context, f"{e}; using fallback {fallback!r}")
+        return fallback
+
+
+def safe_hex_to_rgba(
+    color: str,
+    fallback: tuple[int, int, int, int] = (0, 0, 0, 0),
+    context: str = "background_color",
+) -> tuple[int, int, int, int]:
+    """Parse an 8-digit #RRGGBBAA (or 6-digit #RRGGBB, fully transparent) string
+    into RGBA. Malformed RGB or alpha digits warn to the console and fall back
+    to `fallback` rather than raising."""
+    text = color.strip()
+    hexpart = text.lstrip("#")
+    if len(hexpart) == 8:
+        rgb_fallback = fallback[:3]
+        r, g, b = safe_hex_to_rgb(hexpart[:6], fallback=rgb_fallback, context=context)
+        try:
+            a = int(hexpart[6:8], 16)
+        except ValueError:
+            _warn(
+                context,
+                f"invalid alpha digits {hexpart[6:8]!r}; using fallback alpha {fallback[3]}",
+            )
+            a = fallback[3]
+        return (r, g, b, a)
+    r, g, b = safe_hex_to_rgb(text, fallback=fallback[:3], context=context)
+    return (r, g, b, 0)
 
 
 def checkerboard(width: int, height: int, size: int) -> Image.Image:

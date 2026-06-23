@@ -101,3 +101,18 @@ def test_empty_text_does_not_crash():
         variant_spacing_step=10,
     )
     assert image.shape[0] == 1
+
+
+def test_malformed_text_color_does_not_crash():
+    image, mask = WordmarkGenerator().run(
+        text="HI",
+        font_path="",
+        font_size=32,
+        text_color="not-a-color",
+        style_preset="regular",
+        letter_spacing=0,
+        padding=5,
+        variant_count=1,
+        variant_spacing_step=10,
+    )
+    assert image.shape[0] == 1

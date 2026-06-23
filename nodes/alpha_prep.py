@@ -12,9 +12,10 @@ from PIL import Image, ImageFilter
 
 from ._image_utils import (
     checkerboard,
-    hex_to_rgb,
     image_tensor_to_pil,
     pil_to_image_mask_tensors,
+    safe_hex_to_rgb,
+    safe_hex_to_rgba,
     trim_to_content,
 )
 
@@ -128,7 +129,7 @@ class AlphaPrepResizeCanvas:
         }
 
     def run(self, image, mask, width, height, anchor, keep_aspect, background_color):
-        bg_rgba = self._background_color(background_color)
+        bg_rgba = safe_hex_to_rgba(background_color, context="background_color")
         out_images, out_masks = [], []
         for i in range(image.shape[0]):
             rgba = image_tensor_to_pil(image[i], mask[i])
@@ -143,17 +144,6 @@ class AlphaPrepResizeCanvas:
             torch.cat(out_images, dim=0) if len(out_images) > 1 else out_images[0],
             torch.cat(out_masks, dim=0) if len(out_masks) > 1 else out_masks[0],
         )
-
-    @staticmethod
-    def _background_color(color: str) -> tuple[int, int, int, int]:
-        color = color.strip()
-        hexpart = color.lstrip("#")
-        if len(hexpart) == 8:
-            r, g, b = hex_to_rgb(hexpart[:6])
-            a = int(hexpart[6:8], 16)
-            return (r, g, b, a)
-        r, g, b = hex_to_rgb(color)
-        return (r, g, b, 0)
 
     @staticmethod
     def _fit(content: Image.Image, width: int, height: int, keep_aspect: bool) -> Image.Image:
@@ -185,7 +175,9 @@ class AlphaPrepOutline:
         }
 
     def run(self, image, mask, outline_width, outline_color):
-        rgb_color = hex_to_rgb(outline_color)
+        rgb_color = safe_hex_to_rgb(
+            outline_color, fallback=(255, 255, 255), context="outline_color"
+        )
         out_images, out_masks = [], []
         for i in range(image.shape[0]):
             rgba = image_tensor_to_pil(image[i], mask[i])
@@ -232,7 +224,7 @@ class AlphaPrepDropShadow:
         }
 
     def run(self, image, mask, offset_x, offset_y, blur_radius, shadow_color, shadow_opacity):
-        rgb_color = hex_to_rgb(shadow_color)
+        rgb_color = safe_hex_to_rgb(shadow_color, fallback=(0, 0, 0), context="shadow_color")
         out_images, out_masks = [], []
         for i in range(image.shape[0]):
             rgba = image_tensor_to_pil(image[i], mask[i])
@@ -290,7 +282,11 @@ class AlphaPrepPreviewBackground:
             if background == "checkerboard":
                 bg = checkerboard(w, h, checker_size)
             else:
-                bg = Image.new("RGBA", (w, h), (*hex_to_rgb(color), 255))
+                bg = Image.new(
+                    "RGBA",
+                    (w, h),
+                    (*safe_hex_to_rgb(color, fallback=(255, 255, 255), context="color"), 255),
+                )
             bg.alpha_composite(rgba)
             img_t, _ = pil_to_image_mask_tensors(bg)
             out_images.append(img_t)

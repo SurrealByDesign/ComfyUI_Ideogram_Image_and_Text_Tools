@@ -15,9 +15,9 @@ from PIL import Image
 
 from ._image_utils import (
     checkerboard,
-    hex_to_rgb,
     image_tensor_to_pil,
     pil_to_image_mask_tensors,
+    safe_hex_to_rgba,
     trim_to_content,
 )
 
@@ -65,7 +65,7 @@ class StickerSheetBuilder:
             trim_to_content(image_tensor_to_pil(images[i], masks[i]))
             for i in range(images.shape[0])
         ]
-        bg_rgba = self._background_color(background_color)
+        bg_rgba = safe_hex_to_rgba(background_color, context="background_color")
 
         if layout == "grid":
             positions, final_w, final_h = self._layout_grid(
@@ -86,17 +86,6 @@ class StickerSheetBuilder:
         sheet_img, sheet_mask = pil_to_image_mask_tensors(sheet)
         preview_img, _ = pil_to_image_mask_tensors(preview)
         return (sheet_img, sheet_mask, preview_img)
-
-    @staticmethod
-    def _background_color(color: str) -> tuple[int, int, int, int]:
-        color = color.strip()
-        hexpart = color.lstrip("#")
-        if len(hexpart) == 8:
-            r, g, b = hex_to_rgb(hexpart[:6])
-            a = int(hexpart[6:8], 16)
-            return (r, g, b, a)
-        r, g, b = hex_to_rgb(color)
-        return (r, g, b, 0)
 
     @staticmethod
     def _layout_grid(items, sheet_width, sheet_height, margin, padding, columns):

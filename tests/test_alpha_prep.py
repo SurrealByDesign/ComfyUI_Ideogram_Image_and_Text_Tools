@@ -125,3 +125,30 @@ def test_preview_background_solid_color_fills_transparent_area():
     # a transparent corner should now show the blue background
     assert out_image[0, 0, 0, 2].item() > 0.9
     assert out_image[0, 0, 0, 0].item() < 0.1
+
+
+def test_malformed_colors_never_crash_any_alpha_prep_node():
+    image, mask = _square_asset(size=20, content=20)
+
+    AlphaPrepOutline().run(image, mask, outline_width=4, outline_color="notacolor")
+    AlphaPrepDropShadow().run(
+        image,
+        mask,
+        offset_x=2,
+        offset_y=2,
+        blur_radius=1,
+        shadow_color="not-a-color",
+        shadow_opacity=0.5,
+    )
+    AlphaPrepResizeCanvas().run(
+        image,
+        mask,
+        width=20,
+        height=20,
+        anchor="center",
+        keep_aspect=True,
+        background_color="garbage",
+    )
+    AlphaPrepPreviewBackground().run(
+        image, mask, background="solid_color", color="xyz", checker_size=4
+    )

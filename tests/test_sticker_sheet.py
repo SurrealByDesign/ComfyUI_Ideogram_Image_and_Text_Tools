@@ -118,3 +118,19 @@ def test_background_color_fills_margins():
     # top-left corner is in the margin, should be solid blue
     assert sheet_image[0, 0, 0, 2].item() > 0.9
     assert sheet_image[0, 0, 0, 0].item() < 0.1
+
+
+def test_malformed_background_color_does_not_crash():
+    images, masks = _batch_of_squares(count=1, size=10, content=10)
+    sheet_image, _, _ = StickerSheetBuilder().run(
+        images,
+        masks,
+        layout="grid",
+        sheet_width=40,
+        sheet_height=40,
+        margin=10,
+        padding=0,
+        columns=1,
+        background_color="not-a-color",
+    )
+    assert sheet_image.shape[0] == 1

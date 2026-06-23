@@ -103,3 +103,20 @@ def test_batch_of_two_different_sized_assets_does_not_crash():
     )
     t_img = result[0]
     assert t_img.shape[0] == 2
+
+
+def test_malformed_colors_do_not_crash():
+    image, mask = _colored_square()
+    builder = LogoAssetBuilder()
+    result = builder.run(
+        image,
+        mask,
+        padding=5,
+        square_size=64,
+        banner_width=128,
+        banner_height=64,
+        anchor="center",
+        background_color="not-a-color",
+        monochrome_color="also-not-a-color",
+    )
+    assert result[0].shape[0] == 1

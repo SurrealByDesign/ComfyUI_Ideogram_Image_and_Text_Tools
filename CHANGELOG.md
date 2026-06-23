@@ -3,10 +3,50 @@
 All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project intends to adhere to [Semantic Versioning](https://semver.org/)
-once the first stable node interfaces ship.
+and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+
+### Fixed
+
+- `hex_to_rgb()` raised an unhandled `ValueError` on any malformed color
+  string, with no exception handling at any call site — every node that
+  accepts a free-text color `STRING` widget (`AlphaPrepOutline`,
+  `AlphaPrepDropShadow`, `AlphaPrepPreviewBackground`,
+  `AlphaPrepResizeCanvas`, `StickerSheetBuilder`, `WordmarkGenerator`,
+  `LogoAssetBuilder`) crashed the entire ComfyUI queue on a single typo'd
+  color value (e.g. a missing `#`, a named color, a stray character).
+  Added `safe_hex_to_rgb()`/`safe_hex_to_rgba()` in `nodes/_image_utils.py`,
+  which warn to the console and fall back to a sane default color instead
+  of raising; every affected node now uses the safe variant. `hex_to_rgb()`
+  itself is unchanged (still raises) for callers that want strict parsing.
+- Deduplicated `_background_color()`, which existed as byte-for-byte
+  identical copies in `AlphaPrepResizeCanvas` and `StickerSheetBuilder`,
+  with `LogoAssetBuilder` reaching into `AlphaPrepResizeCanvas`'s private
+  static method as an ad hoc shared utility. Replaced all three with the
+  new shared `safe_hex_to_rgba()`.
+- `__init__.py`'s module docstring claimed "No nodes are registered yet —
+  feature work has not started," directly contradicted by the very next
+  line, which imports and exposes 8 registered nodes.
+- `CONTRIBUTING.md` referenced a "project bible in the repository root
+  discussion / issue tracker" that does not exist anywhere in this
+  repository or its issue tracker — a dangling reference to an internal
+  planning artifact. Replaced with a pointer to `README.md`.
+- README's "Status" section claimed live-ComfyUI testing and the v1.0 tag
+  were still outstanding; both were already done. Updated to reflect
+  reality.
+- README's install command had a literal unfilled `<this-repo-url>`
+  placeholder instead of the actual clone URL.
+- `requirements.txt` declared `numpy`/`pillow`/`torch` with no version
+  pins, and unnecessarily re-declared packages ComfyUI already ships --
+  an unpinned `torch` re-install in particular risks pulling a build
+  that doesn't match the user's CUDA/ComfyUI setup. `requirements.txt`
+  is now intentionally empty (matching the sibling
+  ComfyUI-Ideogram-Palette-and-Prompt-Tools project's established
+  convention); CI now installs `torch`/`numpy`/`pillow` directly since
+  it runs outside a ComfyUI environment.
+
+## [1.0.0] - 2026-06-21
 
 ### Added
 

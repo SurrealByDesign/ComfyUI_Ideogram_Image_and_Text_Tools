@@ -1,3 +1,6 @@
-numpy
-pillow
-torch
+# Intentionally empty of torch, numpy, and Pillow.
+# ComfyUI already ships all three, and re-declaring/reinstalling them here is
+# harmful — in particular, reinstalling torch can pull a build that doesn't
+# match the user's CUDA/ComfyUI setup and break their installation. This
+# package imports them at runtime but relies on the versions ComfyUI already
+# provides.

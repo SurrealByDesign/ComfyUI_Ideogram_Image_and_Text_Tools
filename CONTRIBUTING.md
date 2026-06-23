@@ -2,8 +2,8 @@
 
 ## Project Scope
 
-Before contributing, read the project bible in the repository root
-discussion / issue tracker. In short:
+Before contributing, read [README.md](README.md) for why this repository
+exists and what it does. In short:
 
 - This repository builds **asset creation and preparation tools**, not
   prompt tools, JSON builders, layout planners, or dataset/training tools.

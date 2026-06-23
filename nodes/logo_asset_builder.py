@@ -12,9 +12,10 @@ import torch
 from PIL import Image
 
 from ._image_utils import (
-    hex_to_rgb,
     image_tensor_to_pil,
     pil_to_image_mask_tensors,
+    safe_hex_to_rgb,
+    safe_hex_to_rgba,
     trim_to_content,
 )
 from .alpha_prep import _ANCHORS, AlphaPrepResizeCanvas, _anchor_offset
@@ -82,8 +83,8 @@ class LogoAssetBuilder:
         background_color,
         monochrome_color,
     ):
-        bg_rgba = AlphaPrepResizeCanvas._background_color(background_color)
-        mono_rgb = hex_to_rgb(monochrome_color)
+        bg_rgba = safe_hex_to_rgba(background_color, context="background_color")
+        mono_rgb = safe_hex_to_rgb(monochrome_color, fallback=(0, 0, 0), context="monochrome_color")
 
         transparents, squares, banners, monochromes = [], [], [], []
 

@@ -9,3 +9,6 @@ venv/
 !examples/**/*.png
 .DS_Store
 .claude/
+.env
+.vscode/
+.idea/

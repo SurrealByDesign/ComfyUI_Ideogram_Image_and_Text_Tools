@@ -13,7 +13,7 @@ import os
 import torch
 from PIL import Image, ImageDraw, ImageFont
 
-from ._image_utils import hex_to_rgb, pil_to_image_mask_tensors, trim_to_content
+from ._image_utils import pil_to_image_mask_tensors, safe_hex_to_rgb, trim_to_content
 
 _FALLBACK_FONT_NAMES = ("DejaVuSans-Bold.ttf", "DejaVuSans.ttf", "arial.ttf")
 
@@ -86,7 +86,7 @@ class WordmarkGenerator:
         variant_spacing_step,
     ):
         font = _load_font(font_path, font_size)
-        color = hex_to_rgb(text_color)
+        color = safe_hex_to_rgb(text_color, fallback=(0, 0, 0), context="text_color")
         render_text = text.upper() if style_preset in ("uppercase", "wide") else text
         base_spacing = letter_spacing + (font_size // 6 if style_preset == "wide" else 0)
 
