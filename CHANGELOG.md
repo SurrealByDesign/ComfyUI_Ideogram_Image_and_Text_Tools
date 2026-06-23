@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- `AlphaPrepMaskAdapter` node: inverts `MASK` (passes `IMAGE` through
+  unchanged) to bridge this package's alpha convention with ComfyUI
+  core's inpainting-style convention. Since inversion is self-inverse,
+  the same node works at both boundaries (`LoadImage` -> adapter ->
+  any node here; any node here -> adapter -> `JoinImageWithAlpha` ->
+  `SaveImage`), replacing the need to wire core's bare `InvertMask`
+  yourself and reason about which direction it needs to go. All four
+  example workflows updated to use it in place of `InvertMask`.
+  Verified live against a running ComfyUI instance, including a saved
+  PNG's alpha channel inspected byte-for-byte.
 - README showcase images for all four node systems under `assets/`,
   generated with the real nodes (not mockups) against a cartoon hotdog
   test asset: AlphaPrep's outline/drop-shadow chain, a StickerSheetBuilder

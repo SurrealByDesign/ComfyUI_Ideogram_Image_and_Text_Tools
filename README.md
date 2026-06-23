@@ -27,7 +27,8 @@ progress and [docs/](docs/) for design notes and known limitations.
 
 1. **AlphaPrep** (implemented) — trim transparent borders, pad, center,
    resize canvas, generate sticker outlines and drop shadows, preview
-   against backgrounds. See [docs/nodes/alphaprep.md](docs/nodes/alphaprep.md).
+   against backgrounds, and adapt the mask convention at ComfyUI core
+   boundaries. See [docs/nodes/alphaprep.md](docs/nodes/alphaprep.md).
 
    ![A cartoon hotdog sticker with a white sticker-cut outline and a soft drop shadow, shown on a checkerboard transparency background](assets/alphaprep_showcase.png)
 
@@ -92,8 +93,10 @@ to understand before wiring nodes together.
 **This is the opposite of ComfyUI's own inpainting-mask convention**
 (where `1.0` means "masked out"). Concretely: `LoadImage`'s `MASK`
 output and `JoinImageWithAlpha`'s `alpha` input both expect the
-inpainting-style convention, not this package's. Route through core's
-`InvertMask` node at both boundaries — see
+inpainting-style convention, not this package's. Use **AlphaPrep: Mask
+Adapter** at both boundaries — `LoadImage -> AlphaPrep: Mask Adapter ->`
+any node here, and any node here `-> AlphaPrep: Mask Adapter ->
+JoinImageWithAlpha -> SaveImage`. See
 [docs/README.md](docs/README.md#mask-convention--read-this-before-wiring-to-core-comfyui-nodes)
 for the full explanation, and [examples/](examples/) for working
 reference wiring.
@@ -101,8 +104,8 @@ reference wiring.
 ## Known Limitations
 
 - **Mask convention mismatch with core ComfyUI nodes** (see above) —
-  forgetting `InvertMask` at either boundary produces silently wrong
-  output, not an error.
+  forgetting **AlphaPrep: Mask Adapter** at either boundary produces
+  silently wrong output, not an error.
 - **`WordmarkGenerator` font fallback on Linux**: if no `font_path` is
   supplied and none of the fallback system font names
   (`DejaVuSans-Bold.ttf`, `DejaVuSans.ttf`, `arial.ttf`) resolve on

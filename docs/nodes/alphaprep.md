@@ -47,10 +47,35 @@ Flattens a transparent asset onto a `checkerboard` or `solid_color`
 background for visual inspection. Returns a plain `IMAGE` (no mask) —
 this node is for previewing, not for further alpha-aware processing.
 
+## AlphaPrep: Mask Adapter
+
+Converts `MASK` between this package's alpha convention and ComfyUI
+core's inpainting-style convention. `IMAGE` passes through unchanged;
+`MASK` is inverted (`1.0 - mask`).
+
+Inversion is its own inverse, so the same node works at both
+boundaries where this package meets core nodes:
+
+- **Inbound**: `LoadImage -> AlphaPrep: Mask Adapter -> ` any node in
+  this package. `LoadImage`'s `MASK` output is core-convention; every
+  node here expects alpha-convention.
+- **Outbound**: any node in this package `-> AlphaPrep: Mask Adapter
+  -> JoinImageWithAlpha -> SaveImage`. `JoinImageWithAlpha`'s `alpha`
+  input expects core-convention.
+
+This replaces wiring core's bare `InvertMask` node yourself at each
+boundary — same underlying operation, but packaged as one of this
+project's own nodes (so it shows up under the `Ideogram Image and
+Text Tools/AlphaPrep` category) and carries `IMAGE` alongside `MASK`
+so it drops into a chain the same way every other node here does,
+instead of needing a separate pass-through wire for the image.
+
 ## Typical Workflow
 
 ```
-Ideogram Generate -> AlphaPrep: Trim -> AlphaPrep: Outline
-                   -> AlphaPrep: Drop Shadow -> AlphaPrep: Resize Canvas
-                   -> AlphaPrep: Preview Background (for review)
+LoadImage -> AlphaPrep: Mask Adapter -> AlphaPrep: Trim
+          -> AlphaPrep: Outline -> AlphaPrep: Drop Shadow
+          -> AlphaPrep: Resize Canvas
+          -> AlphaPrep: Preview Background (for review)
+          -> AlphaPrep: Mask Adapter -> JoinImageWithAlpha -> SaveImage
 ```

@@ -2,6 +2,7 @@ import torch
 
 from nodes.alpha_prep import (
     AlphaPrepDropShadow,
+    AlphaPrepMaskAdapter,
     AlphaPrepOutline,
     AlphaPrepPreviewBackground,
     AlphaPrepResizeCanvas,
@@ -152,3 +153,27 @@ def test_malformed_colors_never_crash_any_alpha_prep_node():
     AlphaPrepPreviewBackground().run(
         image, mask, background="solid_color", color="xyz", checker_size=4
     )
+
+
+def test_mask_adapter_inverts_mask_and_passes_image_through():
+    image, mask = _square_asset(size=10, content=4)
+    out_image, out_mask = AlphaPrepMaskAdapter().run(image, mask)
+    assert torch.equal(out_image, image)
+    assert torch.allclose(out_mask, 1.0 - mask)
+
+
+def test_mask_adapter_is_self_inverse():
+    image, mask = _square_asset(size=10, content=4)
+    once_image, once_mask = AlphaPrepMaskAdapter().run(image, mask)
+    twice_image, twice_mask = AlphaPrepMaskAdapter().run(once_image, once_mask)
+    assert torch.equal(twice_image, image)
+    assert torch.allclose(twice_mask, mask)
+
+
+def test_mask_adapter_handles_batches():
+    image, mask = _square_asset(size=10, content=4)
+    batch_image = torch.cat([image, image], dim=0)
+    batch_mask = torch.cat([mask, mask], dim=0)
+    out_image, out_mask = AlphaPrepMaskAdapter().run(batch_image, batch_mask)
+    assert out_image.shape[0] == 2
+    assert torch.allclose(out_mask, 1.0 - batch_mask)

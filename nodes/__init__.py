@@ -2,6 +2,7 @@
 
 from .alpha_prep import (
     AlphaPrepDropShadow,
+    AlphaPrepMaskAdapter,
     AlphaPrepOutline,
     AlphaPrepPreviewBackground,
     AlphaPrepResizeCanvas,
@@ -17,6 +18,7 @@ NODE_CLASS_MAPPINGS = {
     "AlphaPrepOutline": AlphaPrepOutline,
     "AlphaPrepDropShadow": AlphaPrepDropShadow,
     "AlphaPrepPreviewBackground": AlphaPrepPreviewBackground,
+    "AlphaPrepMaskAdapter": AlphaPrepMaskAdapter,
     "StickerSheetBuilder": StickerSheetBuilder,
     "WordmarkGenerator": WordmarkGenerator,
     "LogoAssetBuilder": LogoAssetBuilder,
@@ -28,6 +30,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "AlphaPrepOutline": "AlphaPrep: Outline",
     "AlphaPrepDropShadow": "AlphaPrep: Drop Shadow",
     "AlphaPrepPreviewBackground": "AlphaPrep: Preview Background",
+    "AlphaPrepMaskAdapter": "AlphaPrep: Mask Adapter",
     "StickerSheetBuilder": "Sticker Sheet Builder",
     "WordmarkGenerator": "Wordmark Generator",
     "LogoAssetBuilder": "Logo Asset Builder",

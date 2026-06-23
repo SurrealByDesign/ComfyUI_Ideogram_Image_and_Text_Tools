@@ -28,16 +28,16 @@
     }
   },
   "3": {
-    "class_type": "InvertMask",
+    "class_type": "AlphaPrepMaskAdapter",
     "_meta": {
       "title": "JoinImageWithAlpha expects an inpainting-style mask, so invert"
     },
-    "inputs": { "mask": ["2", 1] }
+    "inputs": { "image": ["2", 0], "mask": ["2", 1] }
   },
   "4": {
     "class_type": "JoinImageWithAlpha",
     "_meta": { "title": "Bake mask into PNG alpha for export" },
-    "inputs": { "image": ["2", 0], "alpha": ["3", 0] }
+    "inputs": { "image": ["3", 0], "alpha": ["3", 1] }
   },
   "5": {
     "class_type": "SaveImage",

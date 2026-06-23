@@ -291,3 +291,39 @@ class AlphaPrepPreviewBackground:
             img_t, _ = pil_to_image_mask_tensors(bg)
             out_images.append(img_t)
         return (torch.cat(out_images, dim=0) if len(out_images) > 1 else out_images[0],)
+
+
+class AlphaPrepMaskAdapter:
+    """Convert MASK between this package's alpha convention and ComfyUI core's
+    inpainting-style convention. IMAGE passes through unchanged; MASK is inverted
+    (1.0 - mask).
+
+    Since inversion is its own inverse, the same node works at both boundaries:
+      - LoadImage -> AlphaPrepMaskAdapter -> any AlphaPrep/StickerSheetBuilder/
+        LogoAssetBuilder node (LoadImage's MASK is core-convention; this
+        package's nodes expect alpha-convention).
+      - ...any node in this package -> AlphaPrepMaskAdapter -> JoinImageWithAlpha
+        -> SaveImage (JoinImageWithAlpha's `alpha` input expects core-convention).
+
+    This replaces wiring in core's bare `InvertMask` node yourself at each
+    boundary -- same operation, but packaged with this package's own nodes for
+    discoverability, and it carries IMAGE through alongside MASK so it drops
+    into a chain the same way every other node here does.
+    """
+
+    CATEGORY = "Ideogram Image and Text Tools/AlphaPrep"
+    RETURN_TYPES = ("IMAGE", "MASK")
+    RETURN_NAMES = ("image", "mask")
+    FUNCTION = "run"
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "image": ("IMAGE",),
+                "mask": ("MASK",),
+            }
+        }
+
+    def run(self, image, mask):
+        return (image, 1.0 - mask)
