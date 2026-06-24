@@ -45,11 +45,25 @@ LoadImage -> AlphaPrep: Mask Adapter -> AlphaPrep: Trim
 ```
 
 This loads any image, strips its transparent border, and saves it
-back out with correct alpha. See
-[examples/alphaprep_basic.json](examples/alphaprep_basic.json) for
-the fuller version with outline/shadow/resize added, or
-[examples/](examples/) for a ready-to-load workflow for every node
-system below.
+back out with correct alpha.
+
+For something to actually open and look at, **[workflows/](workflows/)**
+has three polished, ready-to-load templates — each with a yellow
+README note built into the graph explaining what it does and what to
+change:
+
+- **[Sticker Prep Pipeline](workflows/01_sticker_prep_pipeline.json)**
+  — this quickstart chain, plus outline/shadow/resize.
+- **[Sticker Sheet from Three Logos](workflows/02_sticker_sheet_from_three_logos.json)**
+  — batch multiple assets into one packed sheet.
+- **[Full Brand Kit from One Logo](workflows/03_full_brand_kit_from_one_logo.json)**
+  — the most complete single-graph tour: `LogoAssetBuilder`,
+  `AssetPackExport`, and `ThumbnailLegibilityCheck` together.
+
+[examples/](examples/) also has a flat-format workflow per node
+system, used by this repo's own test suite — see
+[workflows/README.md](workflows/README.md) for how the two folders
+differ.
 
 ## Status
 

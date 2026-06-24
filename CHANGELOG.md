@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- `workflows/`: three polished, full-UI-format ComfyUI workflow
+  templates, each with a styled "Note" placard explaining what it
+  does and what to change before running it (the same pattern used
+  by the sibling ComfyUI-Ideogram-Palette-and-Prompt-Tools project).
+  Distinct from `examples/`, which holds the flat API-format files
+  this repo's own test suite validates against the live node
+  registry -- these render as a real visual graph when loaded.
+  Built programmatically against this package's live `/object_info`
+  schemas (so every link/widget slot is correct by construction, not
+  hand-typed) and verified by converting each to API format and
+  queuing it against a running ComfyUI instance, confirming real
+  output files before being committed. Along the way, found that
+  this ComfyUI version represents combo/dropdown inputs as the
+  string `"COMBO"` rather than a literal options list -- a real
+  schema-format difference from this package's own (older-style)
+  combo inputs, which still show as a literal list. Added
+  `tests/test_workflow_templates.py` (JSON validity, no duplicate
+  node ids, all links reference real nodes, every template has a
+  non-empty Note) as a lightweight regression guard against the
+  files getting corrupted by a future manual edit.
+  - `01_sticker_prep_pipeline.json` -- the core AlphaPrep chain.
+  - `02_sticker_sheet_from_three_logos.json` -- batch + pack three
+    assets with `StickerSheetBuilder`.
+  - `03_full_brand_kit_from_one_logo.json` -- `LogoAssetBuilder` +
+    `AssetPackExport` + `ThumbnailLegibilityCheck` together.
+
 ### Changed
 
 - README restructure based on outside review: punchier opening line,
