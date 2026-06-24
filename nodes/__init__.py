@@ -12,6 +12,7 @@ from .alpha_prep import (
 from .asset_pack_export import AssetPackExport
 from .logo_asset_builder import LogoAssetBuilder
 from .sticker_sheet import StickerSheetBuilder
+from .thumbnail_legibility_check import ThumbnailLegibilityCheck
 from .wordmark import WordmarkGenerator
 
 NODE_CLASS_MAPPINGS = {
@@ -26,6 +27,7 @@ NODE_CLASS_MAPPINGS = {
     "WordmarkGenerator": WordmarkGenerator,
     "LogoAssetBuilder": LogoAssetBuilder,
     "AssetPackExport": AssetPackExport,
+    "ThumbnailLegibilityCheck": ThumbnailLegibilityCheck,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -40,4 +42,5 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "WordmarkGenerator": "Wordmark Generator",
     "LogoAssetBuilder": "Logo Asset Builder",
     "AssetPackExport": "Asset Pack Export",
+    "ThumbnailLegibilityCheck": "Thumbnail Legibility Check",
 }

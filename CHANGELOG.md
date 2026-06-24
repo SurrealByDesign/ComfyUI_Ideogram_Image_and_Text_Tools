@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- `ThumbnailLegibilityCheck` node (a new sixth node system): renders
+  an asset at multiple small sizes side by side, each at its *actual*
+  pixel dimensions (not a scaled-up mockup), bottom-aligned with a
+  size label under each, to answer "does this logo/sticker survive
+  at icon/favicon scale?" before shipping it. Reuses
+  `AssetPackExport`'s size-spec parser and `WordmarkGenerator`'s font
+  fallback chain rather than duplicating either. New example workflow
+  `thumbnaillegibilitycheck_basic.json`. Verified live against a
+  running ComfyUI instance, including a visual check that all four
+  requested sizes (256/128/64/32px) rendered at the correct real
+  pixel dimensions with correctly-scaled checkerboard tiles.
 - `AssetPackExport` node (a new fifth node system): exports one
   transparent asset at multiple named target sizes (e.g.
   `icon:128x128, square:512x512, banner:1500x500`) in a single pass.

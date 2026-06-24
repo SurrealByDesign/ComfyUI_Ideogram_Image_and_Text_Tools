@@ -25,10 +25,11 @@ Generate assets -> Prepare assets -> Package assets
 
 v1.0 is tagged with the four original node systems: AlphaPrep,
 StickerSheetBuilder, WordmarkGenerator, and LogoAssetBuilder. Since
-then, **AssetPackExport** was added as a fifth system, and AlphaPrep
-gained **Mask Adapter** and **Canvas Expand**. Every node has an
-example workflow in [examples/](examples/) and is verified end-to-end
-against a live ComfyUI instance. See [CHANGELOG.md](CHANGELOG.md) for
+then, **AssetPackExport** and **ThumbnailLegibilityCheck** were added
+as a fifth and sixth system, and AlphaPrep gained **Mask Adapter** and
+**Canvas Expand**. Every node has an example workflow in
+[examples/](examples/) and is verified end-to-end against a live
+ComfyUI instance. See [CHANGELOG.md](CHANGELOG.md) for
 progress and [docs/](docs/) for design notes and known limitations.
 
 ## Node Systems (in build order)
@@ -77,6 +78,11 @@ progress and [docs/](docs/) for design notes and known limitations.
    banner:1500x500`) in a single pass, one execution per requested
    size via ComfyUI's list-output mechanism. See
    [docs/nodes/assetpackexport.md](docs/nodes/assetpackexport.md).
+6. **ThumbnailLegibilityCheck** (implemented) — render an asset at
+   multiple small sizes side by side, each at real pixel dimensions,
+   to check whether a logo/sticker survives at icon/favicon scale
+   before shipping it. See
+   [docs/nodes/thumbnaillegibilitycheck.md](docs/nodes/thumbnaillegibilitycheck.md).
 
 Background removal and other supporting utilities may be added later,
 but are not the primary value of this repository.
