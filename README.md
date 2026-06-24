@@ -27,12 +27,9 @@ generic image editing tools. This repository does not duplicate any
 of that — it focuses on the gap after generation: turning a finished
 image into something you can actually ship.
 
-```
-Generate assets          Prepare assets                Package assets
-(Ideogram, etc.)    ->   AlphaPrep,              ->    StickerSheetBuilder,
-                         WordmarkGenerator              LogoAssetBuilder,
-                                                         AssetPackExport
-```
+Concretely: generated images get **prepared** (AlphaPrep,
+WordmarkGenerator) and then **packaged** (StickerSheetBuilder,
+LogoAssetBuilder, AssetPackExport).
 
 ## Quickstart
 
@@ -67,16 +64,12 @@ differ.
 
 ## Status
 
-v1.0 tagged the four original node systems: AlphaPrep,
-StickerSheetBuilder, WordmarkGenerator, and LogoAssetBuilder. v1.1.0
-adds **AssetPackExport** and **ThumbnailLegibilityCheck** as a fifth
-and sixth system, plus **Mask Adapter** and **Canvas Expand** within
-AlphaPrep. Every node has an example workflow in
-[examples/](examples/) and is verified end-to-end against a live
-ComfyUI instance. See [CHANGELOG.md](CHANGELOG.md) for
-progress and [docs/](docs/) for design notes and known limitations.
+All six node systems below are implemented, each with an example
+workflow in [examples/](examples/) and verified end-to-end against a
+live ComfyUI instance. See [CHANGELOG.md](CHANGELOG.md) for version
+history and [docs/](docs/) for design notes and known limitations.
 
-## Node Systems (in build order)
+## Node Systems
 
 1. **AlphaPrep** (implemented) — trim transparent borders, expand the
    canvas by explicit per-edge padding, pad, center, resize canvas,
@@ -145,9 +138,6 @@ progress and [docs/](docs/) for design notes and known limitations.
 
    *Each thumbnail is rendered at its real pixel size, not scaled up — this is what it actually looks like that small.*
 
-Background removal and other supporting utilities may be added later,
-but are not the primary value of this repository.
-
 ## Design Principles
 
 - Follow standard ComfyUI node conventions; no custom image formats.
@@ -162,6 +152,10 @@ but are not the primary value of this repository.
 This repository will not implement prompt generators, prompt mutators,
 shot planners, JSON builders, layout/character planners, dataset tools,
 or LoRA/training tools. Those belong in other repositories.
+
+Background removal is a deliberate non-priority too — it's not the
+primary value of this repository, and may be added later only as a
+supporting utility, not a lead feature.
 
 ## Core Concept: the Alpha Convention
 

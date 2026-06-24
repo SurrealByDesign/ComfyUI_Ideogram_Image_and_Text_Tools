@@ -50,6 +50,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   ComfyUI version note reworded from "live-verified against 0.24.0"
   to "most recently tested against 0.24.0" so it reads as a point-in-
   time fact rather than a claim that ages into looking stale.
+- Second README pass based on further outside review: the
+  `Generate -> Prepare -> Package` code-block diagram replaced with a
+  plain sentence (the column-aligned ASCII layout was a real risk on
+  narrow viewports); "Status" collapsed from a version-history
+  narrative (which duplicates CHANGELOG.md's job) to a single
+  current-state sentence; "Node Systems (in build order)" renamed to
+  "Node Systems" (build order isn't useful to someone evaluating
+  whether to install this); the orphaned "background removal...
+  not the primary value" line moved from a dangling position after
+  the node list into Non-Goals, where it belongs. (A separate claim
+  in this same review round -- that "Why This Exists" still leads
+  with negation -- was checked against the live file and found to be
+  stale; that reordering had already shipped in the previous pass.)
 
 ## [1.1.0] - 2026-06-23
 
