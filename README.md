@@ -31,9 +31,10 @@ progress and [docs/](docs/) for design notes and known limitations.
 
 ## Node Systems (in build order)
 
-1. **AlphaPrep** (implemented) — trim transparent borders, pad, center,
-   resize canvas, generate sticker outlines and drop shadows, preview
-   against backgrounds, and adapt the mask convention at ComfyUI core
+1. **AlphaPrep** (implemented) — trim transparent borders, expand the
+   canvas by explicit per-edge padding, pad, center, resize canvas,
+   generate sticker outlines and drop shadows, preview against
+   backgrounds, and adapt the mask convention at ComfyUI core
    boundaries. See [docs/nodes/alphaprep.md](docs/nodes/alphaprep.md).
 
    ![A cartoon hotdog sticker with a white sticker-cut outline and a soft drop shadow, shown on a checkerboard transparency background](assets/alphaprep_showcase.png)

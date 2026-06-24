@@ -327,3 +327,51 @@ class AlphaPrepMaskAdapter:
 
     def run(self, image, mask):
         return (image, 1.0 - mask)
+
+
+class AlphaPrepCanvasExpand:
+    """Pad an asset's canvas by explicit per-edge pixel amounts, keeping the
+    content at its original position (top-left offset by `left`/`top`).
+
+    This is distinct from AlphaPrepResizeCanvas, which fits content into a
+    target width/height and can shrink or stretch it. CanvasExpand never
+    resizes the content -- it only adds room around it, the same operation as
+    Photoshop's "Canvas Size" with a fixed anchor. Useful before outpainting,
+    before placing text/logos with breathing room, or before an Ideogram edit
+    that needs extra canvas to work with.
+    """
+
+    CATEGORY = "Ideogram Image and Text Tools/AlphaPrep"
+    RETURN_TYPES = ("IMAGE", "MASK")
+    RETURN_NAMES = ("image", "mask")
+    FUNCTION = "run"
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "image": ("IMAGE",),
+                "mask": ("MASK",),
+                "top": ("INT", {"default": 0, "min": 0, "max": 4096, "step": 1}),
+                "bottom": ("INT", {"default": 0, "min": 0, "max": 4096, "step": 1}),
+                "left": ("INT", {"default": 0, "min": 0, "max": 4096, "step": 1}),
+                "right": ("INT", {"default": 0, "min": 0, "max": 4096, "step": 1}),
+                "background_color": ("STRING", {"default": "#00000000"}),
+            }
+        }
+
+    def run(self, image, mask, top, bottom, left, right, background_color):
+        bg_rgba = safe_hex_to_rgba(background_color, context="background_color")
+        out_images, out_masks = [], []
+        for i in range(image.shape[0]):
+            rgba = image_tensor_to_pil(image[i], mask[i])
+            w, h = rgba.size
+            canvas = Image.new("RGBA", (w + left + right, h + top + bottom), bg_rgba)
+            canvas.alpha_composite(rgba, (left, top))
+            img_t, mask_t = pil_to_image_mask_tensors(canvas)
+            out_images.append(img_t)
+            out_masks.append(mask_t)
+        return (
+            torch.cat(out_images, dim=0) if len(out_images) > 1 else out_images[0],
+            torch.cat(out_masks, dim=0) if len(out_masks) > 1 else out_masks[0],
+        )

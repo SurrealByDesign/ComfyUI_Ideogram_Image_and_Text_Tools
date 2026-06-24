@@ -17,6 +17,23 @@ transparent `padding` border.
 - **alpha_threshold** (0–1): alpha values above this count as content.
 - **padding** (px): transparent border added back after trimming.
 
+## AlphaPrep: Canvas Expand
+
+Pads the canvas by explicit per-edge pixel amounts (`top`, `bottom`,
+`left`, `right`), keeping the content at its original size and
+position — content is never resized or re-centered, only the canvas
+grows around it. The new area is filled with `background_color`
+(same `#RRGGBBAA`/`#RRGGBB` format as Resize Canvas).
+
+This is distinct from **AlphaPrep: Resize Canvas**, which fits content
+into a target width/height (and can shrink or stretch it). Canvas
+Expand is the "Photoshop Canvas Size with a fixed anchor" operation —
+useful before outpainting, before placing text/logos with deliberate
+breathing room, or before an Ideogram edit that needs extra canvas to
+work with.
+
+- **top / bottom / left / right** (px): padding added on each edge.
+
 ## AlphaPrep: Resize Canvas
 
 Places the asset onto a new canvas of `width` x `height`, anchored at

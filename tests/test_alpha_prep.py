@@ -1,6 +1,7 @@
 import torch
 
 from nodes.alpha_prep import (
+    AlphaPrepCanvasExpand,
     AlphaPrepDropShadow,
     AlphaPrepMaskAdapter,
     AlphaPrepOutline,
@@ -177,3 +178,46 @@ def test_mask_adapter_handles_batches():
     out_image, out_mask = AlphaPrepMaskAdapter().run(batch_image, batch_mask)
     assert out_image.shape[0] == 2
     assert torch.allclose(out_mask, 1.0 - batch_mask)
+
+
+def test_canvas_expand_adds_padding_per_edge():
+    image, mask = _square_asset(size=20, content=20)
+    out_image, out_mask = AlphaPrepCanvasExpand().run(
+        image, mask, top=5, bottom=10, left=15, right=20, background_color="#00000000"
+    )
+    assert out_image.shape[1:3] == (20 + 5 + 10, 20 + 15 + 20)
+
+
+def test_canvas_expand_keeps_content_at_original_position_not_centered():
+    image, mask = _square_asset(size=20, content=20)
+    out_image, out_mask = AlphaPrepCanvasExpand().run(
+        image, mask, top=0, bottom=0, left=10, right=0, background_color="#00000000"
+    )
+    # content shifted right by `left`; original left edge (now padding) is transparent
+    assert out_mask[0, 0, 0].item() == 0.0
+    assert out_mask[0, 0, 15].item() > 0.99
+
+
+def test_canvas_expand_zero_padding_is_noop_on_size():
+    image, mask = _square_asset(size=20, content=20)
+    out_image, _ = AlphaPrepCanvasExpand().run(
+        image, mask, top=0, bottom=0, left=0, right=0, background_color="#00000000"
+    )
+    assert out_image.shape[1:3] == (20, 20)
+
+
+def test_canvas_expand_fills_with_background_color():
+    image, mask = _square_asset(size=10, content=10)
+    out_image, _ = AlphaPrepCanvasExpand().run(
+        image, mask, top=10, bottom=0, left=0, right=0, background_color="#0000FFFF"
+    )
+    # the new top strip should be solid blue, not transparent
+    assert out_image[0, 0, 0, 2].item() > 0.9
+    assert out_image[0, 0, 0, 0].item() < 0.1
+
+
+def test_canvas_expand_malformed_color_does_not_crash():
+    image, mask = _square_asset(size=10, content=10)
+    AlphaPrepCanvasExpand().run(
+        image, mask, top=5, bottom=5, left=5, right=5, background_color="not-a-color"
+    )

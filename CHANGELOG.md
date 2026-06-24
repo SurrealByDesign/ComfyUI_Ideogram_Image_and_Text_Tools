@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- `AlphaPrepCanvasExpand` node: pads the canvas by explicit per-edge
+  pixel amounts (`top`/`bottom`/`left`/`right`), keeping content at
+  its original size and position -- the "Photoshop Canvas Size with a
+  fixed anchor" operation, distinct from `AlphaPrepResizeCanvas`'s
+  fit-to-target-size behavior. Useful before outpainting, before
+  placing text/logos with deliberate breathing room, or before an
+  Ideogram edit that needs extra canvas. Wired into
+  `alphaprep_basic.json` between Trim and Outline. Verified live
+  against a running ComfyUI instance.
 - `AlphaPrepMaskAdapter` node: inverts `MASK` (passes `IMAGE` through
   unchanged) to bridge this package's alpha convention with ComfyUI
   core's inpainting-style convention. Since inversion is self-inverse,
