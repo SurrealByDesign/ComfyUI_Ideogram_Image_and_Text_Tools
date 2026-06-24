@@ -23,9 +23,11 @@ Generate assets -> Prepare assets -> Package assets
 
 ## Status
 
-v1.0 is tagged. All four v1 node systems are implemented: AlphaPrep,
-StickerSheetBuilder, WordmarkGenerator, and LogoAssetBuilder, each with
-example workflows in [examples/](examples/) and verified end-to-end
+v1.0 is tagged with the four original node systems: AlphaPrep,
+StickerSheetBuilder, WordmarkGenerator, and LogoAssetBuilder. Since
+then, **AssetPackExport** was added as a fifth system, and AlphaPrep
+gained **Mask Adapter** and **Canvas Expand**. Every node has an
+example workflow in [examples/](examples/) and is verified end-to-end
 against a live ComfyUI instance. See [CHANGELOG.md](CHANGELOG.md) for
 progress and [docs/](docs/) for design notes and known limitations.
 
@@ -69,6 +71,12 @@ progress and [docs/](docs/) for design notes and known limitations.
    | ![Transparent hotdog logo export on a checkerboard background](assets/logoassetbuilder_transparent_showcase.png) | ![Hotdog logo centered on a square canvas with a cream background](assets/logoassetbuilder_square_showcase.png) | ![Hotdog logo centered on a wide banner canvas with a cream background](assets/logoassetbuilder_banner_showcase.png) | ![Hotdog logo silhouette recolored to solid red, alpha preserved](assets/logoassetbuilder_monochrome_showcase.png) |
 
    *One logo asset in, four production-ready package outputs out.*
+
+5. **AssetPackExport** (implemented) — export one asset at multiple
+   named target sizes (e.g. `icon:128x128, square:512x512,
+   banner:1500x500`) in a single pass, one execution per requested
+   size via ComfyUI's list-output mechanism. See
+   [docs/nodes/assetpackexport.md](docs/nodes/assetpackexport.md).
 
 Background removal and other supporting utilities may be added later,
 but are not the primary value of this repository.

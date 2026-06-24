@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- `AssetPackExport` node (a new fifth node system): exports one
+  transparent asset at multiple named target sizes (e.g.
+  `icon:128x128, square:512x512, banner:1500x500`) in a single pass.
+  Since different sizes can't be stacked into one IMAGE batch tensor
+  (mismatched H/W), returns Python lists via `OUTPUT_IS_LIST` --
+  ComfyUI's native mechanism for variable-shape outputs -- so a
+  downstream non-list-aware node like `SaveImage` is automatically
+  invoked once per requested size. Malformed size entries are skipped
+  with a console warning; an all-malformed or blank list falls back
+  to a single 512x512 entry. New example workflow
+  `assetpackexport_basic.json`. Verified live against a running
+  ComfyUI instance, including confirming three distinct output file
+  sizes from one execution.
 - `AlphaPrepCanvasExpand` node: pads the canvas by explicit per-edge
   pixel amounts (`top`/`bottom`/`left`/`right`), keeping content at
   its original size and position -- the "Photoshop Canvas Size with a

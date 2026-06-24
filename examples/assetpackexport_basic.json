@@ -1,0 +1,38 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "_meta": { "title": "Load source logo" },
+    "inputs": { "image": "logo.png" }
+  },
+  "2": {
+    "class_type": "AlphaPrepMaskAdapter",
+    "_meta": {
+      "title": "Convert LoadImage's inpainting-style mask to AlphaPrep's alpha convention"
+    },
+    "inputs": { "image": ["1", 0], "mask": ["1", 1] }
+  },
+  "3": {
+    "class_type": "AlphaPrepTrim",
+    "_meta": { "title": "Trim transparent border" },
+    "inputs": { "image": ["2", 0], "mask": ["2", 1], "alpha_threshold": 0.0, "padding": 0 }
+  },
+  "4": {
+    "class_type": "AssetPackExport",
+    "_meta": { "title": "Export icon/square/banner sizes in one pass" },
+    "inputs": {
+      "image": ["3", 0],
+      "mask": ["3", 1],
+      "sizes": "icon:128x128\nsquare:512x512\nbanner:1500x500",
+      "anchor": "center",
+      "keep_aspect": true,
+      "background_color": "#00000000"
+    }
+  },
+  "5": {
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save each exported size (runs once per AssetPackExport list entry)"
+    },
+    "inputs": { "images": ["4", 0], "filename_prefix": "asset_pack" }
+  }
+}
