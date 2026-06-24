@@ -44,6 +44,10 @@ progress and [docs/](docs/) for design notes and known limitations.
 
    *Trim → Outline → Drop Shadow → Resize Canvas → Preview Background, chained.*
 
+   ![A hotdog sticker on a checkerboard background with a dark outline rectangle showing its original trimmed bounds, asymmetrically padded more on the top and left than the bottom and right by AlphaPrep: Canvas Expand](assets/canvasexpand_showcase.png)
+
+   *Canvas Expand adds asymmetric per-edge padding (here: 40px top, 60px left, 10px bottom/right) — the outline marks the original trimmed bounds.*
+
 2. **StickerSheetBuilder** (implemented) — pack multiple transparent
    assets into print-ready sticker sheets with configurable layouts,
    margins, and sheet sizes. See
@@ -78,11 +82,20 @@ progress and [docs/](docs/) for design notes and known limitations.
    banner:1500x500`) in a single pass, one execution per requested
    size via ComfyUI's list-output mechanism. See
    [docs/nodes/assetpackexport.md](docs/nodes/assetpackexport.md).
+
+   ![Three hotdog logo exports side by side at different sizes: a small square icon, a medium square, and a wide banner, each on a cream background](assets/assetpackexport_showcase.png)
+
+   *One `sizes` spec (`icon:96x96, square:200x200, banner:480x160`), three exports, one execution.*
+
 6. **ThumbnailLegibilityCheck** (implemented) — render an asset at
    multiple small sizes side by side, each at real pixel dimensions,
    to check whether a logo/sticker survives at icon/favicon scale
    before shipping it. See
    [docs/nodes/thumbnaillegibilitycheck.md](docs/nodes/thumbnaillegibilitycheck.md).
+
+   ![A hotdog sticker rendered at four real pixel sizes side by side on checkerboard backgrounds, from largest to smallest, each labeled with its dimensions: 160x160, 80x80, 40x40, 20x20](assets/thumbnaillegibilitycheck_showcase.png)
+
+   *Each thumbnail is rendered at its real pixel size, not scaled up — this is what it actually looks like that small.*
 
 Background removal and other supporting utilities may be added later,
 but are not the primary value of this repository.
@@ -106,9 +119,10 @@ or LoRA/training tools. Those belong in other repositories.
 
 Every node in this repository treats `IMAGE` + `MASK` as a single
 transparent asset, where `MASK` is the asset's **alpha channel**:
-`1.0` = opaque content, `0.0` = fully transparent. All composability
-between AlphaPrep, StickerSheetBuilder, WordmarkGenerator, and
-LogoAssetBuilder depends on this shared contract — it's the one thing
+`1.0` = opaque content, `0.0` = fully transparent. All six node
+systems — AlphaPrep, StickerSheetBuilder, WordmarkGenerator,
+LogoAssetBuilder, AssetPackExport, and ThumbnailLegibilityCheck —
+depend on this shared contract; it's the one thing
 to understand before wiring nodes together.
 
 **This is the opposite of ComfyUI's own inpainting-mask convention**

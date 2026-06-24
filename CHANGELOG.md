@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- README showcase images for `AlphaPrepCanvasExpand`, `AssetPackExport`,
+  and `ThumbnailLegibilityCheck` (the three node systems added since
+  v1.0 that didn't have one yet), generated with the real nodes
+  against the same cartoon hotdog asset as the original four. Canvas
+  Expand's image draws an outline marking the original trimmed bounds
+  so the asymmetric per-edge padding is visible at a glance. Updated
+  the "Core Concept" section's node list, which had gone stale (still
+  named only the original four systems).
+
 - `ThumbnailLegibilityCheck` node (a new sixth node system): renders
   an asset at multiple small sizes side by side, each at its *actual*
   pixel dimensions (not a scaled-up mockup), bottom-aligned with a
@@ -65,6 +74,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- `ThumbnailLegibilityCheck`: adjacent size labels (e.g. "40x40" next
+  to "20x20") could render overlapping/collided when thumbnails were
+  small enough that the label text was wider than the thumbnail
+  itself. Found while generating the node's own README showcase image.
+  Each column now widens to fit its label text, not just its
+  thumbnail.
 - `hex_to_rgb()` raised an unhandled `ValueError` on any malformed color
   string, with no exception handling at any call site — every node that
   accepts a free-text color `STRING` widget (`AlphaPrepOutline`,

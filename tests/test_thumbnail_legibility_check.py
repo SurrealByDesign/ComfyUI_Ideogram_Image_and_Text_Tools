@@ -103,3 +103,28 @@ def test_output_has_no_alpha_channel_dimension_mismatch():
         label_color="#000000",
     )
     assert preview.shape[-1] == 3
+
+
+def test_tiny_thumbnails_get_columns_wide_enough_for_their_labels():
+    # Regression test: with very small thumbnails, a label like "20x20" is
+    # wider than the thumbnail itself. Columns must widen to fit the label,
+    # or adjacent labels render overlapping/collided.
+    from PIL import Image, ImageDraw
+
+    from nodes.wordmark import _load_font
+
+    image, mask = _square_asset()
+    (preview,) = ThumbnailLegibilityCheck().run(
+        image,
+        mask,
+        sizes="40x40\n20x20",
+        background="checkerboard",
+        color="#FFFFFF",
+        checker_size=8,
+        label_color="#000000",
+    )
+    font = _load_font("", 14)
+    measure = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    label_w = measure.textbbox((0, 0), "20x20", font=font)[2]
+    # two columns, each at least as wide as its label, plus margins/gap
+    assert preview.shape[2] >= 2 * label_w

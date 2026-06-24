@@ -96,22 +96,34 @@ class ThumbnailLegibilityCheck:
             thumbnails.append((label, canvas))
 
         font = _load_font("", _FONT_SIZE)
-        max_thumb_h = max(t.height for _, t in thumbnails)
-        total_w = _MARGIN * 2 + sum(t.width for _, t in thumbnails) + _GAP * (len(thumbnails) - 1)
+        measure = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+
+        # Each column must be at least as wide as its label, or adjacent
+        # labels collide when thumbnails are small (e.g. "40x40"/"20x20"
+        # next to each other with little thumbnail width to anchor on).
+        columns = []
+        for label, thumb in thumbnails:
+            bbox = measure.textbbox((0, 0), label, font=font)
+            text_w = bbox[2] - bbox[0]
+            columns.append((label, thumb, max(thumb.width, text_w)))
+
+        max_thumb_h = max(t.height for _, t, _ in columns)
+        total_w = _MARGIN * 2 + sum(cw for _, _, cw in columns) + _GAP * (len(columns) - 1)
         total_h = _MARGIN * 2 + max_thumb_h + _LABEL_GAP + _FONT_SIZE + 4
 
         strip = Image.new("RGBA", (total_w, total_h), (255, 255, 255, 255))
         draw = ImageDraw.Draw(strip)
         x_cursor = _MARGIN
-        for label, thumb in thumbnails:
-            y = _MARGIN + (max_thumb_h - thumb.height)
-            strip.alpha_composite(thumb, (x_cursor, y))
+        for label, thumb, col_w in columns:
+            thumb_x = x_cursor + (col_w - thumb.width) // 2
+            thumb_y = _MARGIN + (max_thumb_h - thumb.height)
+            strip.alpha_composite(thumb, (thumb_x, thumb_y))
             bbox = draw.textbbox((0, 0), label, font=font)
             text_w = bbox[2] - bbox[0]
-            text_x = x_cursor + (thumb.width - text_w) // 2
+            text_x = x_cursor + (col_w - text_w) // 2
             text_y = _MARGIN + max_thumb_h + _LABEL_GAP
             draw.text((text_x, text_y), label, font=font, fill=(*label_rgb, 255))
-            x_cursor += thumb.width + _GAP
+            x_cursor += col_w + _GAP
 
         img_t, _ = pil_to_image_mask_tensors(strip)
         return (img_t,)
