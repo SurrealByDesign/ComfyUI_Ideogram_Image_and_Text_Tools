@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- README restructure based on outside review: punchier opening line,
+  a prominent early warning pointing at the mask-convention section
+  (previously only discoverable after reading the whole node list),
+  a new "Quickstart" section with a minimal 3-node chain and a link
+  to `examples/`, "Why This Exists" reordered to lead with what the
+  project does rather than what it doesn't, the abstract
+  `Generate -> Prepare -> Package` diagram fleshed out with actual
+  node names, the `WordmarkGenerator` entry now states up front that
+  it renders via Pillow/fonts (not Ideogram) and flags the Linux font
+  fallback inline rather than only in Known Limitations, and the
+  ComfyUI version note reworded from "live-verified against 0.24.0"
+  to "most recently tested against 0.24.0" so it reads as a point-in-
+  time fact rather than a claim that ages into looking stale.
+
 ## [1.1.0] - 2026-06-23
 
 ### Added

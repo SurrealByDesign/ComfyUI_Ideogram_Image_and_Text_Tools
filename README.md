@@ -6,20 +6,50 @@
 ![Version 1.1.0](https://img.shields.io/badge/version-1.1.0-blue.svg)
 ![ComfyUI custom nodes](https://img.shields.io/badge/ComfyUI-custom%20nodes-6f42c1.svg)
 
-Take Ideogram outputs and turn them into usable assets.
+Generate a logo. Build a sticker sheet. Export every size you need.
+All without leaving ComfyUI.
+
+> ⚠️ **Before you wire anything up:** every node here uses the inverse
+> of ComfyUI's default mask convention. Read
+> [Core Concept: the Alpha Convention](#core-concept-the-alpha-convention)
+> first, or you'll get silently wrong output, not an error.
 
 ## Why This Exists
 
-The Ideogram ecosystem already has prompt builders, JSON builders, layout
-tools, character tools, background removal solutions, and generic image
-editing tools. This repository does not duplicate any of that.
+This repository turns generated images — from Ideogram or anywhere
+else — into production-ready creative assets: sticker sheets, logo
+packages, wordmarks, multi-size exports, all as composable ComfyUI
+nodes.
 
-Instead, it focuses on a gap that is currently underserved: turning
-generated images into production-ready creative assets.
+The Ideogram ecosystem already has prompt builders, JSON builders,
+layout tools, character tools, background removal solutions, and
+generic image editing tools. This repository does not duplicate any
+of that — it focuses on the gap after generation: turning a finished
+image into something you can actually ship.
 
 ```
-Generate assets -> Prepare assets -> Package assets
+Generate assets          Prepare assets                Package assets
+(Ideogram, etc.)    ->   AlphaPrep,              ->    StickerSheetBuilder,
+                         WordmarkGenerator              LogoAssetBuilder,
+                                                         AssetPackExport
 ```
+
+## Quickstart
+
+The minimum useful chain — five minutes to a real exported asset,
+and the foundation every other workflow in this repo builds on:
+
+```
+LoadImage -> AlphaPrep: Mask Adapter -> AlphaPrep: Trim
+  -> AlphaPrep: Mask Adapter -> JoinImageWithAlpha -> SaveImage
+```
+
+This loads any image, strips its transparent border, and saves it
+back out with correct alpha. See
+[examples/alphaprep_basic.json](examples/alphaprep_basic.json) for
+the fuller version with outline/shadow/resize added, or
+[examples/](examples/) for a ready-to-load workflow for every node
+system below.
 
 ## Status
 
@@ -59,7 +89,11 @@ progress and [docs/](docs/) for design notes and known limitations.
 
 3. **WordmarkGenerator** (implemented) — typography-first branding
    asset generation (band logos, product names, podcast branding,
-   etc.). See
+   etc.). This renders text directly with Pillow and a font file —
+   no Ideogram or other image-generation call involved. **On Linux**,
+   pass an explicit `font_path`: the bundled fallback font names
+   default to Windows/macOS fonts and silently degrade to a
+   low-fidelity bitmap font otherwise (see Known Limitations). See
    [docs/nodes/wordmarkgenerator.md](docs/nodes/wordmarkgenerator.md).
 
    ![The text HOTDOG STAND rendered in bold, widely-spaced red uppercase letters](assets/wordmark_showcase.png)
@@ -164,10 +198,11 @@ git clone https://github.com/SurrealByDesign/ComfyUI_Ideogram_Image_and_Text_Too
 No extra dependencies to install — this package only needs `torch`,
 `numpy`, and `Pillow`, all of which ComfyUI already provides.
 
-Live-verified against **ComfyUI 0.24.0**. The nodes are plain Python
-with no version-specific API usage, so other recent ComfyUI versions
-should work too, but 0.24.0 is the only version this has actually been
-run against end-to-end.
+Most recently tested end-to-end against **ComfyUI 0.24.0**. The nodes
+are plain Python with no version-specific API usage, so other recent
+ComfyUI versions are likely fine, but 0.24.0 is the only version this
+has actually been run against — this line will be updated as newer
+versions get verified.
 
 ## Testing
 
