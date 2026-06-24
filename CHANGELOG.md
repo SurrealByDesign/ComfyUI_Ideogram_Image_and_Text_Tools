@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-06-23
+
 ### Added
 
 - README showcase images for `AlphaPrepCanvasExpand`, `AssetPackExport`,

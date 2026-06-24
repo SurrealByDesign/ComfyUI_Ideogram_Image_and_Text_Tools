@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-ideogram-image-and-text-tools"
-version = "1.0.0"
+version = "1.1.0"
 description = "Production asset creation and preparation nodes for ComfyUI: turn Ideogram outputs into usable assets."
 requires-python = ">=3.10"
 license = { text = "MIT" }

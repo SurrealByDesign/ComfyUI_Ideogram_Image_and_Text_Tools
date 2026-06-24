@@ -3,7 +3,7 @@
 ![CI](https://github.com/SurrealByDesign/ComfyUI_Ideogram_Image_and_Text_Tools/actions/workflows/ci.yml/badge.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 ![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)
-![Version 1.0.0](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Version 1.1.0](https://img.shields.io/badge/version-1.1.0-blue.svg)
 ![ComfyUI custom nodes](https://img.shields.io/badge/ComfyUI-custom%20nodes-6f42c1.svg)
 
 Take Ideogram outputs and turn them into usable assets.
@@ -23,11 +23,11 @@ Generate assets -> Prepare assets -> Package assets
 
 ## Status
 
-v1.0 is tagged with the four original node systems: AlphaPrep,
-StickerSheetBuilder, WordmarkGenerator, and LogoAssetBuilder. Since
-then, **AssetPackExport** and **ThumbnailLegibilityCheck** were added
-as a fifth and sixth system, and AlphaPrep gained **Mask Adapter** and
-**Canvas Expand**. Every node has an example workflow in
+v1.0 tagged the four original node systems: AlphaPrep,
+StickerSheetBuilder, WordmarkGenerator, and LogoAssetBuilder. v1.1.0
+adds **AssetPackExport** and **ThumbnailLegibilityCheck** as a fifth
+and sixth system, plus **Mask Adapter** and **Canvas Expand** within
+AlphaPrep. Every node has an example workflow in
 [examples/](examples/) and is verified end-to-end against a live
 ComfyUI instance. See [CHANGELOG.md](CHANGELOG.md) for
 progress and [docs/](docs/) for design notes and known limitations.
